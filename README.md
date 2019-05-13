@@ -1,1 +1,3 @@
 # Simulator-e-banke
+
+Napomene
