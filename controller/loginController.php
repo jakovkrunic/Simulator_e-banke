@@ -18,7 +18,7 @@ class LoginController extends BaseController
 		if( !isset( $_POST['oib'] ) || !isset( $_POST['password'] ) || !isset( $_POST['email'] ) )
 		{
       //header( 'Location: ' . __SITE_URL . '/index.php?rt=login');
-      $this->registry->template->title = 'Ulogirajte se.';
+      $this->registry->template->title = 'Prijavite se.';
       $this->registry->template->message = 'Molimo, unesite sve tražene podatke.';
       $this->registry->template->show( 'login_index' );
 
@@ -31,7 +31,7 @@ class LoginController extends BaseController
       else if($poruka === 'check_email') 
       {
       //  header( 'Location: ' . __SITE_URL . '/index.php?rt=login');
-        $this->registry->template->title = 'Ulogirajte se';
+        $this->registry->template->title = 'Prijavite se';
         $this->registry->template->message = 'Niste registrirani. Ako ste se već pokušali registrirati, provjerite email. Ako niste, registrirajte se.';
         $this->registry->template->show( 'login_index' );
   			exit();
@@ -39,7 +39,7 @@ class LoginController extends BaseController
       else if( $poruka === 'not_correct')
       {
         //  header( 'Location: ' . __SITE_URL . '/index.php?rt=login');
-          $this->registry->template->title = 'Ulogirajte se';
+          $this->registry->template->title = 'Prijavite se';
           $this->registry->template->message = 'Lozinka nije točna.';
           $this->registry->template->show( 'login_index' );
           exit();
@@ -47,7 +47,7 @@ class LoginController extends BaseController
       else if( $poruka === 'no_user')
       {
         //  header( 'Location: ' . __SITE_URL . '/index.php?rt=login');
-          $this->registry->template->title = 'Ulogirajte se';
+          $this->registry->template->title = 'Prijavite se';
           $this->registry->template->message = 'Nema korisnika s ovim OIB-om i emailom u bazi korisnika.';
           $this->registry->template->show( 'login_index' );
           exit();
@@ -80,10 +80,17 @@ class LoginController extends BaseController
       $this->registry->template->show( 'registration_index' );
 			exit();
     }
-    else if( !preg_match( '/^[A-Za-z\',.-čćžšđČŠŽĆĐ]{2-20}$/', $_POST['name'] ) || !preg_match( '/^[A-Za-z\',.-čćžšđČŠŽĆĐ]{2-30}$/', $_POST['surname'] ) )
+    else if( !preg_match( '/^[A-Za-zčćžšđČŠŽĆĐ\',.-]*$/', $_POST['name'] ) )
 	  {
 		  $this->registry->template->title = 'Registracija';
-      $this->registry->template->message = 'Ime i prezime nisu u pravilnom obliku.';
+      $this->registry->template->message = 'Ime nije u pravilnom obliku.';
+      $this->registry->template->show( 'registration_index' );
+			exit();
+    }
+    else if ( !preg_match( '/^[A-Za-zčćžšđČŠŽĆĐ\',.-]*$/', $_POST['surname'] ))
+    {
+      $this->registry->template->title = 'Registracija';
+      $this->registry->template->message = 'Prezime nije u pravilnom obliku.';
       $this->registry->template->show( 'registration_index' );
 			exit();
     }
@@ -116,28 +123,6 @@ class LoginController extends BaseController
     
   }
 
-  public function register()
-  {
-    if( !isset( $_GET['niz'] ) || !preg_match( '/^[a-z]{20}$/', $_GET['niz'] ) )
-    {
-      $this->registry->template->message = 'Nešto nije u redu.';
-      $this->registry->template->title = 'Registracija';
-      $this->registry->template->show( 'registration_index' );
-      exit();
-    }
-    else 
-    {
-      $ls = new LoginService();
-      $poruka = $ls -> finishRegistration($_GET['niz']);
-      if($poruka === 'OK')
-        $this->registry->template->message = 'Registracija uspjela.';
-      else if($poruka === 'Not OK')  
-        $this->registry->template->message = 'Nešto nije u redu s reg_seq.';
-      $this->registry->template->title = 'Registracija';
-      $this->registry->template->show( 'registration_index' );
-			exit();
-    }
-  }
 
   public function logout()
 	{
@@ -149,3 +134,4 @@ class LoginController extends BaseController
 };
 
 ?>
+
