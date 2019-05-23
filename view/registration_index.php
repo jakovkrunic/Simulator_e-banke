@@ -18,13 +18,13 @@
    	    OIB:
   		<input type="text" name="oib" />
 		<br /> <br />
-		Name:
+		Ime:
   		<input type="text" name="name" />
 		<br /> <br />
-		Surname:
+		Prezime:
   		<input type="text" name="surname" />
 		<br />   <br />
-  	    Password:
+  	    Lozinka:
   		<input type="password" name="password" />
   		<br />  <br />
         E-mail:
