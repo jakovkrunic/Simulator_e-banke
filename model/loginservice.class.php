@@ -25,8 +25,8 @@ class LoginService
 		{
 		// Sad je valjda sve OK. Ulogiraj ga.
 		$_SESSION['oib'] = $_POST['oib'];
-		$_SESSION['name'] = $row['name'];
-		$_SESSION['surname'] = $row['surname'];
+		$_SESSION['ime'] = $row['ime'];
+		$_SESSION['prezime'] = $row['prezime'];
 		$_SESSION['email'] = $row['email'];
 		return 'OK';
 		}
@@ -37,7 +37,7 @@ class LoginService
 		try
 		{
 			$db = DB::getConnection();
-			$st = $db->prepare( 'SELECT oib FROM project_users WHERE oib=:oib' );
+			$st = $db->prepare( 'SELECT oib FROM projekt_korisnik WHERE oib=:oib' );
 			$st->execute( array( 'oib' => $oib ) );
 		}
 		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
