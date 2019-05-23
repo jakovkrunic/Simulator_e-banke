@@ -63,6 +63,8 @@ try
 		'prezime varchar(50) NOT NULL,' .
 		'email varchar(50) NOT NULL,' .
 		'password_hash varchar(255) NOT NULL,'.
+		'reg_seq varchar(20) NOT NULL,' .
+		'odobren int,' .
 		'registriran int)'
 	);
 
@@ -200,7 +202,7 @@ echo "Napravio tablicu projekt_kredit.<br />";
 // Ubaci neke korisnike unutra
 try
 {
-	$st = $db->prepare( 'INSERT INTO projekt_korisnik(oib, ime, prezime, email, password_hash , registriran) VALUES (:oib, :ime, :prezime, :email, :password, \'1\')' );
+	$st = $db->prepare( 'INSERT INTO projekt_korisnik(oib, ime, prezime, email, password_hash , reg_seq, odobren, registriran) VALUES (:oib, :ime, :prezime, :email, :password, \'abc\', \'1\', \'1\')' );
 
 	$st->execute( array( 'oib' => '00000000000', 'ime' => 'admin', 'prezime' => 'admin', 'email' => 'admin@admin.com', 'password' => password_hash( 'admin', PASSWORD_DEFAULT ) ) );
 	$st->execute( array( 'oib' => '11111111111', 'ime' => 'mirko', 'prezime' => 'miric', 'email' => 'mirko@miric.com', 'password' => password_hash( 'mirkovasifra', PASSWORD_DEFAULT ) ) );
