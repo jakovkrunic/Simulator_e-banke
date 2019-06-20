@@ -27,7 +27,7 @@ class LoginController extends BaseController
     else{
       $poruka = $ls->checkUserLogin($_POST['oib'],  $_POST['email'], $_POST['password']);
 
-      if($poruka === 'check_email') 
+      if($poruka === 'check_email')
       {
       //  header( 'Location: ' . __SITE_URL . '/index.php?rt=login');
         $this->registry->template->title = 'Prijavite se';
@@ -60,7 +60,7 @@ class LoginController extends BaseController
           exit();
       }
       else if($poruka === 'OK' ){
-        header( 'Location: ' . __SITE_URL . '/index.php?rt=projects'); }
+        header( 'Location: ' . __SITE_URL . '/index.php?rt=user'); }
     }
   }
 
@@ -108,9 +108,9 @@ class LoginController extends BaseController
       $this->registry->template->message = 'Nije unesen ispravan email.';
       $this->registry->template->show( 'registration_index' );
 			exit();
-		
+
     }
-    else if($ls->checkUserOIB($_POST['oib']) === false ) 
+    else if($ls->checkUserOIB($_POST['oib']) === false )
     {
       $this->registry->template->title = 'Registracija';
       $this->registry->template->message = 'Korisnik s ovim OIB-om već postoji.';
@@ -122,13 +122,13 @@ class LoginController extends BaseController
       $poruka = $ls->tryRegistration($_POST['oib'], $_POST['name'], $_POST['surname'], $_POST['password'], $_POST['email']); //ovo implementirati
       if($poruka === 'OK')
         $this->registry->template->message = 'Zahtjev je zaprimljen.';
-      else if($poruka === 'Ne mogu poslati email')  
+      else if($poruka === 'Ne mogu poslati email')
         $this->registry->template->message = 'Ne mogu poslati email.';
       $this->registry->template->title = 'Registracija';
       $this->registry->template->show( 'registration_index' );
 			exit();
     }
-    
+
   }
 
     public function register()
@@ -140,13 +140,13 @@ class LoginController extends BaseController
       $this->registry->template->show( 'registration_index' );
       exit();
     }
-    else 
-    {      
+    else
+    {
       $ls = new LoginService();
       $poruka = $ls -> finishRegistration($_GET['niz']);
       if($poruka === 'OK')
         $this->registry->template->message = 'Registration completed.';
-      else if($poruka === 'Not OK')  
+      else if($poruka === 'Not OK')
         $this->registry->template->message = 'Došlo je do greške.';
       $this->registry->template->title = 'Registration';
       $this->registry->template->show( 'login_index' );
@@ -165,4 +165,3 @@ class LoginController extends BaseController
 };
 
 ?>
-
