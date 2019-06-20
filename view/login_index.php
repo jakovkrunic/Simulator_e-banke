@@ -3,7 +3,9 @@
 <head>
 	<meta charset="utf8">
 	<title>MoržBank</title>
-	<link rel="stylesheet" href="<?php echo __SITE_URL;?>/css/style.css">
+	<link rel="stylesheet" href="<?php echo __SITE_URL;?>/css/style.css">	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+	<script src="./js/login.js"></script>
 </head>
 <body>
 	<h1><?php echo $title; ?></h1>
@@ -12,7 +14,7 @@
 	<br> <br>
 	<form method="post" action="<?php echo __SITE_URL . '/index.php?rt=login/provjeri'?>">
    		OIB:
-  		<input type="text" name="oib" /> <br> <br>
+  		<input type="text" name="oib" id="oib"/> <p id="OIBerror"></p> <br>
 		email:
   		<input type="text" name="email" />
   		<br /> <br>
