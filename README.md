@@ -5,5 +5,3 @@ Korisnik vidi stanje svojih računa te pripadne promete. Također može vršiti 
 # Napomene
 
 Datumi su oblika yyyy-mm-dd.
-
-Opcije u izborniku (naslovnica, računi, transakcije ...) imaju svoje controllere i view-ove. Tako možemo lakše podijeliti poslove i nema mogućnosti konflikta.
