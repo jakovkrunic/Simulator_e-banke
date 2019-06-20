@@ -26,9 +26,8 @@ class LoginController extends BaseController
 		}
     else{
       $poruka = $ls->checkUserLogin($_POST['oib'],  $_POST['email'], $_POST['password']);
-      if($poruka === 'OK' ){
-        header( 'Location: ' . __SITE_URL . '/index.php?rt=projects'); }
-      else if($poruka === 'check_email') 
+
+      if($poruka === 'check_email') 
       {
       //  header( 'Location: ' . __SITE_URL . '/index.php?rt=login');
         $this->registry->template->title = 'Prijavite se';
@@ -52,7 +51,16 @@ class LoginController extends BaseController
           $this->registry->template->show( 'login_index' );
           exit();
       }
-
+      else if( $poruka === 'contact_admin')
+      {
+        //  header( 'Location: ' . __SITE_URL . '/index.php?rt=login');
+          $this->registry->template->title = 'Prijavite se';
+          $this->registry->template->message = 'Vaš račun nije odobren od strane administratora. Kontaktirajte administratora.';
+          $this->registry->template->show( 'login_index' );
+          exit();
+      }
+      else if($poruka === 'OK' ){
+        header( 'Location: ' . __SITE_URL . '/index.php?rt=projects'); }
     }
   }
 
@@ -121,6 +129,29 @@ class LoginController extends BaseController
 			exit();
     }
     
+  }
+
+    public function register()
+  {
+    if( !isset( $_GET['niz'] ) || !preg_match( '/^[a-z]{20}$/', $_GET['niz'] ) )
+    {
+      $this->registry->template->message = 'Došlo je do greške.';
+      $this->registry->template->title = 'Registration';
+      $this->registry->template->show( 'registration_index' );
+      exit();
+    }
+    else 
+    {      
+      $ls = new LoginService();
+      $poruka = $ls -> finishRegistration($_GET['niz']);
+      if($poruka === 'OK')
+        $this->registry->template->message = 'Registration completed.';
+      else if($poruka === 'Not OK')  
+        $this->registry->template->message = 'Došlo je do greške.';
+      $this->registry->template->title = 'Registration';
+      $this->registry->template->show( 'login_index' );
+			exit();
+    }
   }
 
 
