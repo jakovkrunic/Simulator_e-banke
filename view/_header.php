@@ -6,25 +6,24 @@
 	<link rel="stylesheet" href="<?php echo __SITE_URL;?>/css/style.css">
 </head>
 <body>
-	
+
 
 	<nav>
 		<ul>
-			<li><a href="">Naslovnica</a></li>
-			<li><a href="">Računi i stanje računa</a></li>
-			<li><a href="">Transakcije</a></li>
-			<li><a href="">Predlošci</a></li>
-			<li><a href="">Štednje</a></li>
-			<li><a href="">Krediti</a></li>
+			<li><a href="index.php?rt=user">Naslovnica</a></li>
+			<li><a href="index.php?rt=account">Računi i stanje računa</a></li>
+			<li><a href="index.php?rt=transaction">Transakcije</a></li>
+			<li><a href="index.php?rt=template">Predlošci</a></li>
+			<li><a href="index.php?rt=saving">Štednje</a></li>
+			<li><a href="index.php?rt=credit">Krediti</a></li>
 		</ul>
 	</nav>
 	<hr>
 	<div class = "user">
-	Korisnik:  <?php echo $_SESSION['ime'] . ' ' . $_SESSION['prezime']; ?> 
+	Korisnik:  <?php echo $_SESSION['ime'] . ' ' . $_SESSION['prezime']; ?>
 	<form method="post" action="<?php echo __SITE_URL . '/index.php?rt=login/logout'?>">
 	<button class="button" type="submit">Odjavi se</button>
 	</form>
 	</div>
 	 <hr>
 	 <br>
-
