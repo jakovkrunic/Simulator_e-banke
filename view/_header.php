@@ -13,7 +13,7 @@
 			<li><a href="index.php?rt=user">Naslovnica</a></li>
 			<li><a href="index.php?rt=account">Računi i stanje računa</a></li>
 			<li><a href="index.php?rt=transaction">Transakcije</a></li>
-			<li><a href="index.php?rt=template">Predlošci</a></li>
+			<li><a href="index.php?rt=predlozak">Predlošci</a></li>
 			<li><a href="index.php?rt=saving">Štednje</a></li>
 			<li><a href="index.php?rt=credit">Krediti</a></li>
 		</ul>

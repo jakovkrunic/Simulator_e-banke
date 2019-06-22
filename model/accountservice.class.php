@@ -41,8 +41,6 @@ class AccountService
 		return $arr;
 	}
 
-
-
 };
 
 ?>
