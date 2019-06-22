@@ -84,7 +84,7 @@ class LoginController extends BaseController
     else if( !preg_match( '/^[0-9]{11}$/', $_POST['oib'] ) )
 	  {
 		  $this->registry->template->title = 'Registracija';
-      $this->registry->template->message = 'OIB zadrži 11 znamenki između 0 i 9.';
+      $this->registry->template->message = 'OIB sadrži 11 znamenki između 0 i 9.';
       $this->registry->template->show( 'registration_index' );
 			exit();
     }

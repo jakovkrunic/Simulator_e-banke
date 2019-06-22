@@ -13,6 +13,6 @@
   </tr>
 </table>
 <br>
-Stvori novi predložak
+<a href="index.php?rt=predlozak/stvori">Stvori novi predložak!</a>
 <?php
 require_once 'view/_footer.php'; ?>
