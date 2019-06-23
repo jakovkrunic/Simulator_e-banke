@@ -2,6 +2,22 @@
 
 class PredlozakService
 {
+	function getTemplateById( $id )
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT * FROM projekt_predlozak WHERE id=:id' );
+			$st->execute( array( 'id' => $id) );
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+
+		$row = $st->fetch();
+		if( $row === false )
+			return null;
+		else
+			return new Predlozak($row['id'], $row['ime'], $row['racun_posiljatelj'] ,$row['racun_primatelj'], $row['valuta']);
+	}
 
 	function getTemplatesByOwnerAccountId( $racun_posiljatelj )      // dohvati predloske ako znas id racuna posiljatelja
 	{

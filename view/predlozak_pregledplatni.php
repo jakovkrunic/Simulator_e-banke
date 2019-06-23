@@ -8,6 +8,8 @@
     <th>Moj račun</th>
     <th>Račun primatelja</th>
     <th>Valuta</th>
+		<th></th>
+		<th></th>
   </tr>
 	<?php
 		for($i=0;$i<count($platni);$i++)
@@ -17,9 +19,12 @@
 			     '<td>' . $tipovi[$i] . '</td>' .
            '<td>' . $platni[$i]->racun_primatelj . '</td>' .
 			     '<td>' . $platni[$i]->valuta . '</td>' .
+					 '<td><a href="index.php?rt=predlozak/izmijeni&id_predlozak='.$platni[$i]->id.'">Izmijeni</a></td>' .
+					 '<td><a href="index.php?rt=predlozak/obrisi&id_predlozak='.$platni[$i]->id.'">Obriši</a></td>' .
 			     '</tr>';
 		}
 	?>
-</table>
+</table><br>
+<a href="index.php?rt=predlozak">Povratak na izbornik predložaka.</a>
 <?php
 require_once 'view/_footer.php'; ?>

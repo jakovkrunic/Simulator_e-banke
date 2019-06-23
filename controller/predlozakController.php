@@ -16,7 +16,7 @@ class PredlozakController extends BaseController
 		$racuni = $as->getAllUserAccounts($_SESSION['oib']);
 		foreach( $racuni as $racun )
 		{
-			$predlozak = $ts->getTemplatesByOwnerAccountId( $racun->id );
+			$predlozak = $ps->getTemplatesByOwnerAccountId( $racun->id );
 			$svi_predlosci = array_merge($svi_predlosci, $predlozak);
 		}
 		$platni_nalozi = array();
@@ -53,7 +53,7 @@ class PredlozakController extends BaseController
 		$racuni = $as->getAllUserAccounts($_SESSION['oib']);
 		foreach( $racuni as $racun )
 		{
-			$predlozak = $ts->getTemplatesByOwnerAccountId( $racun->id );
+			$predlozak = $ps->getTemplatesByOwnerAccountId( $racun->id );
 			$svi_predlosci = array_merge($svi_predlosci, $predlozak);
 		}
 		$interni_prijenosi = array();
@@ -92,29 +92,39 @@ class PredlozakController extends BaseController
 	}
 	public function provjeri()
 	{
+		$akcija = $_GET['akcija'];
+		if($akcija == 'stvori')
+		{
+			$title = 'Stvaranje novog predloška';
+			$str = 'predlozak_stvori';
+		}
+		else
+		{
+			$title = 'Izmjena novog predloška';
+			$str = 'predlozak_izmijeni';
+		}
 		$ps = new PredlozakService();
 		$as = new AccountService();
 
-		// Ako nam forma nije u $_POST poslala autora u ispravnom obliku, preusmjeri ponovno na formu.
 		if( !isset( $_POST['ime'] ) || !isset( $_POST['moj'] ) || !isset( $_POST['primatelj'] ) || !isset( $_POST['valuta'] ) )
 		{
-			$this->registry->template->naslov = 'Stvaranje novog predloška';
+			$this->registry->template->naslov = $title;
 			$this->registry->template->message = 'Niste unijeli sve podatke!';
-			$this->registry->template->show( 'predlozak_stvori' );
+			$this->registry->template->show( $str );
 			exit();
 		}
 		else if (!preg_match( '/^[0-9]+$/', $_POST['moj'] ) || !preg_match( '/^[0-9]+$/', $_POST['primatelj'] )  )
 		{
-			$this->registry->template->naslov = 'Stvaranje novog predloška';
+			$this->registry->template->naslov = $title;
 			$this->registry->template->message = 'Računi smiju sadržavati samo brojeve!';
-			$this->registry->template->show( 'predlozak_stvori' );
+			$this->registry->template->show( $str );
 			exit();
 		}
 		else if (!preg_match( '/^[A-Z]{3}$/', $_POST['valuta'] ) )
 		{
-			$this->registry->template->naslov = 'Stvaranje novog predloška';
+			$this->registry->template->naslov = $title;
 			$this->registry->template->message = 'Valuta je niz od 3 velika slova!';
-			$this->registry->template->show( 'predlozak_stvori' );
+			$this->registry->template->show( $str );
 			exit();
 		}
     else
@@ -131,25 +141,53 @@ class PredlozakController extends BaseController
 			}
 			if(!$test)
 			{
-				$this->registry->template->naslov = 'Stvaranje novog predloška';
+				$this->registry->template->naslov = $title;
 				$this->registry->template->message = 'U rubrici Broj mog računa ste unijeli račun koji nije Vaš!';
-				$this->registry->template->show( 'predlozak_stvori' );
+				$this->registry->template->show( $str );
 				exit();
 			}
 			if($_POST['moj'] == $_POST['primatelj'])
 			{
-				$this->registry->template->naslov = 'Stvaranje novog predloška';
+				$this->registry->template->naslov = $title;
 				$this->registry->template->message = 'Račun primatelja mora biti različit od računa s kojeg šaljete!';
-				$this->registry->template->show( 'predlozak_stvori' );
+				$this->registry->template->show( $str );
 				exit();
 			}
-			$ps->insertNewTemplate($_POST['ime'], $_POST['moj'], $_POST['primatelj'], $_POST['valuta'] );
-			$this->registry->template->naslov = 'Stvaranje novog predloška';
-			$this->registry->template->message = 'Uspješno ste stvorili novi predložak!';
-			$this->registry->template->show( 'predlozak_stvoren' );
+			if($akcija == 'stvori')
+			{
+				$ps->insertNewTemplate($_POST['ime'], $_POST['moj'], $_POST['primatelj'], $_POST['valuta'] );
+				$this->registry->template->naslov = $title;
+				$this->registry->template->message = 'Uspješno ste stvorili novi predložak!';
+				$this->registry->template->show( 'predlozak_kraj' );
+			}
+			else
+			{
+				$ps->changeTemplate($_GET['akcija'], $_POST['ime'], $_POST['moj'], $_POST['primatelj'], $_POST['valuta'] );
+				$this->registry->template->naslov = $title;
+				$this->registry->template->message = 'Uspješno ste izmijenili predložak!';
+				$this->registry->template->show( 'predlozak_kraj' );
+			}
 
     }
   }
+
+	public function izmijeni()
+	{
+		$ps = new PredlozakService();
+		$this->registry->template->predlozak = $ps->getTemplateById( $_GET['id_predlozak'] );
+		$this->registry->template->naslov = 'Izmjena predloška';
+		$this->registry->template->message = '';
+		$this->registry->template->show( 'predlozak_izmijeni' );
+	}
+
+	public function obrisi()
+	{
+		$ps = new PredlozakService();
+		$ps->deleteTemplate($_GET['id_predlozak']);
+		$this->registry->template->naslov = 'Obrisan predložak!';
+		$this->registry->template->message = '';
+		$this->registry->template->show( 'predlozak_kraj' );
+	}
 
 };
 
