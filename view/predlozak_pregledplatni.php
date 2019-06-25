@@ -1,5 +1,6 @@
 <?php require_once 'view/_header.php';
 ?>
+<script src='./js/confirm_predlozak.js'></script>
 <h2><?php echo $naslov; ?></h2>
 <br>
 <table>
@@ -20,7 +21,7 @@
            '<td>' . $platni[$i]->racun_primatelj . '</td>' .
 			     '<td>' . $platni[$i]->valuta . '</td>' .
 					 '<td><a href="index.php?rt=predlozak/izmijeni&id_predlozak='.$platni[$i]->id.'">Izmijeni</a></td>' .
-					 '<td><a href="index.php?rt=predlozak/obrisi&id_predlozak='.$platni[$i]->id.'">Obriši</a></td>' .
+					 '<td><a href="index.php?rt=predlozak/obrisi&id_predlozak='.$platni[$i]->id.'" class="brisanje">Obriši</a></td>' .
 			     '</tr>';
 		}
 	?>
