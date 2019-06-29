@@ -25,12 +25,5 @@
 			<button class="button" type="submit">Otvori novi račun!</button>
 		</form>	
 
-		<!--  PRIVREMENO DOK SE NE SLOŽI ADMIN HEADER -->
-		<nav>
-			<ul>
-				<li><a href="index.php?rt=account/unapproved">Odobri račun</a></li>
-			</ul>
-		</nav>
-		<!--  -->
 <?php
 require_once 'view/_footer.php'; ?>

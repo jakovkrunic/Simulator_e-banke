@@ -85,7 +85,7 @@ class LoginService
 		$isOK = mail($to, $subject, $message, $headers);
 
 		if( !$isOK )
-			return 'Can not send e-mail';
+			return 'Mail se ne može poslati.';
 
 		//Zahvali mu na prijavi.
 		return 'OK';

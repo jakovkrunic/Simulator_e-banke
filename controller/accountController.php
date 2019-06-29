@@ -52,28 +52,6 @@ class AccountController extends BaseController
 
 	}
 
-	public function unapproved(){
-
-		$as = new AccountService();
-
-		$this->registry->template->racuni = $as->getAllUnapprovedAccounts();		
-		$this->registry->template->naslov = "Odobravanje računa";
-		$this->registry->template->show( 'odobrenje_racuna' );
-	}
-
-	public function approveAcc()
-	{
-		$as = new AccountService();
-
-		$id = $_GET['id'];
-
-		$as->approveAccount($id);
-
-		$this->registry->template->racuni = $as->getAllUnapprovedAccounts();		
-		$this->registry->template->naslov = "Odobravanje računa";
-		$this->registry->template->show( 'odobrenje_racuna' );
-	}
-
 
 
 };

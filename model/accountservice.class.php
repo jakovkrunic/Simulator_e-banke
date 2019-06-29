@@ -55,36 +55,7 @@ class AccountService
 
 	}
 
-	function getAllUnapprovedAccounts()	
-	{
-		try
-		{
-			$db = DB::getConnection();
-			$st = $db->prepare( 'SELECT * FROM projekt_racun WHERE odobren=0' );
-			$st->execute();
-		}
-		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
 
-		$arr = array();
-		while( $row = $st->fetch() )
-		{
-			$arr[] = new Account($row['id'], $row['oib'], $row['tip_racuna'] ,
-					$row['valuta_racuna'], $row['stanje_racuna'],	$row['datum_izrade'], $row['odobren'], $row['dozvoljeni_minus']);
-		}
-
-		return $arr;
-	}
-
-	function approveAccount($id){
-
-        try
-			{				
-				$db = DB::getConnection();
-				$st = $db->prepare( 'UPDATE projekt_racun SET odobren=1 WHERE id=:id' );
-				$st->execute( array( 'id' => $id ) );
-			}
-		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
-	}
 
 };
 

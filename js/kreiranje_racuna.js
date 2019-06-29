@@ -20,8 +20,7 @@ $(document).ready(function (){
         }
         else {
             var opcije =
-                "<option value='EUR'>EUR</option>"
-                + "<option value='USD'>USD</option>";
+                "<option value='HRK'>HRK</option>";
 
             $("#valutaRacuna").html(opcije);
         }

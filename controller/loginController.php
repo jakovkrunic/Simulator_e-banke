@@ -60,7 +60,15 @@ class LoginController extends BaseController
           exit();
       }
       else if($poruka === 'OK' ){
-        header( 'Location: ' . __SITE_URL . '/index.php?rt=user'); }
+        $oib = $_SESSION['oib'];
+		    $ime = $_SESSION['ime'];
+		    $prezime = $_SESSION['prezime'];
+        $email = $_SESSION['email'];
+        if ($oib === '00000000000' && $ime === 'admin' && $prezime === 'admin' && $email === 'admin@admin.com')
+          header( 'Location: ' . __SITE_URL . '/index.php?rt=admin'); 
+        else 
+          header( 'Location: ' . __SITE_URL . '/index.php?rt=user');
+        }
     }
   }
 

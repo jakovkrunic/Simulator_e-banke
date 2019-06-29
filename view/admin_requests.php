@@ -1,11 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf8">
-	<title>MoržBank</title>
-	<link rel="stylesheet" href="<?php echo __SITE_URL;?>/css/style.css">
-</head>
-<body>	
+<?php require_once 'view/admin_header.php';
+?>	
 	<h1><?php echo $title; ?></h1>
 <?php
 echo "<table><th>OIB</th><th>Ime</th><th>Prezime</th><th>Email</th><th></th>";
@@ -23,4 +17,6 @@ echo "<table><th>OIB</th><th>Ime</th><th>Prezime</th><th>Email</th><th></th>";
 			}
 			
 		?>
+
+<?php echo '<br>' . $poruka . '<br>'; ?>
 </body>
