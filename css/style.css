@@ -29,21 +29,33 @@ li a
   
 li a:hover:not(.active) 
 {
-    background-color: #ddd;
+    background-color: #ccd8ff;
 }
   
-h1 { color: #b48608; font-family: 'Open Sans', sans-serif; font-size: 34px; font-weight: 300; line-height: 40px; margin: 0 0 16px; }
+h1 { color: #00134d; font-family: 'Open Sans', sans-serif; font-size: 34px; font-weight: 300; line-height: 40px; margin: 0 0 16px; }
 
-h2 { color: #b48608;  text-align: center; font-family: 'Open Sans', sans-serif; font-size: 24px; font-weight: 300; line-height: 32px; margin: 0 0 14px; }
+h2 { color: #00134d;  text-align: center; font-family: 'Open Sans', sans-serif; font-size: 24px; font-weight: 300; line-height: 32px; margin: 0 0 14px; }
 
-div.user { color: #b48608; text-align: center; font-family: 'Droid serif', serif; font-size: 20px; font-weight: 400; font-style: italic; line-height: 44px; margin: 0 0 12px;  }
+div.user { 
+    color: #00134d; 
+    text-align: center; 
+    font-family: 'Droid serif', serif; 
+    font-size: 20px; font-weight: 400; 
+    font-style: italic; line-height: 44px; 
+    margin: 0 0 12px;
+    background-color: #e6ecff;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-top: 1px solid #00134d;
+    border-bottom: 1px solid #00134d;
+  }
 div.sredina { text-align: center; font-family: 'Droid serif', serif; font-size: 20px; font-weight: 400; font-style: italic; line-height: 44px; margin: 0 0 12px; }
 
-.button {
-    background-color: #b48609; /* Green */
+button.button {
+    background-color: #99b3ff; 
     border: none;
-    border-radius: 10px;
-    color: white;
+    border-radius: 5px;
+    color: #001a66;
     padding: 10px 20px;
     text-align: center;
     text-decoration: none;
@@ -51,11 +63,11 @@ div.sredina { text-align: center; font-family: 'Droid serif', serif; font-size: 
     font-size: 13px;
     margin: 4px 2px;
     cursor: pointer;
-    -webkit-transition-duration: 0.4s; /* Safari */
+    -webkit-transition-duration: 0.4s; 
     transition-duration: 0.4s;
 }
 
-.button:hover {
+button.button:hover {
     box-shadow: 0 7px 9px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
 }
 

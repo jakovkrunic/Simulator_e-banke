@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf8">
 	<title>MoržBank</title>
+	<link rel="icon" href="https://d29fhpw069ctt2.cloudfront.net/icon/image/49289/preview.svg">
 	<link rel="stylesheet" href="<?php echo __SITE_URL;?>/css/style.css">
 </head>
 <body>
