@@ -2,7 +2,7 @@
 ?>	
 	<h1><?php echo $title; ?></h1>
 <?php
-echo "<table><th>OIB</th><th>Ime</th><th>Prezime</th><th>Email</th><th></th>";
+echo '<table align="center"><th>OIB</th><th>Ime</th><th>Prezime</th><th>Email</th><th></th>';
 	foreach($zahtjevi as $user){
 		echo "<tr><td>".$user['oib']."</td><td>".$user['ime']."</td><td>".$user['prezime']."</td><td>".$user['email']."</td>";
 	
@@ -18,5 +18,5 @@ echo "<table><th>OIB</th><th>Ime</th><th>Prezime</th><th>Email</th><th></th>";
 			
 		?>
 
-<?php echo '<br>' . $poruka . '<br>'; ?>
+<?php if(isset($poruka)) echo '<br>' . $poruka . '<br>'; ?>
 </body>

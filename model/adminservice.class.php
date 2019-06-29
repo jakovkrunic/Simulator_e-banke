@@ -58,7 +58,7 @@ class AdminService
         catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
         $row = $st->fetch();
         if($row === false)
-            return 'Nema korisnika s tim oib-om'
+            return 'Nema korisnika s tim oib-om';
 
         $to       = $row['email'];
         $subject  = 'Potvrdni mail';

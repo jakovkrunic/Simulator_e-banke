@@ -1,6 +1,6 @@
 <?php require_once 'view/_header.php';
 ?>
-<table>
+<table align="center">
 	<tr>
     <th>Tip</th>
     <th>Valuta</th>
@@ -21,7 +21,8 @@
 		}
 	?>
 </table>
-<form method="post" action="<?php echo __SITE_URL . '/index.php?rt=account/open'?>">
+<br>
+<form style = "text-align: center" method="post" action="<?php echo __SITE_URL . '/index.php?rt=account/open'?>">
 			<button class="button" type="submit">Otvori novi račun!</button>
 		</form>	
 
