@@ -2,20 +2,20 @@
 
 class AdminService
 {
-	function getUnapprovedUsers(){ 
-        
+	function getUnapprovedUsers(){
+
         $db = DB::getConnection();
         $st = $db->prepare( 'SELECT oib, ime, email, prezime, odobren, registriran FROM projekt_korisnik WHERE odobren = 0' );
         $st->execute();
         $zahtjevi = array();
         while($row = $st->fetch()){
             $zahtjevi[] = $row;
-        }  
-        
+        }
+
         return $zahtjevi;
     }
 
-    function getAllUnapprovedAccounts()	
+    function getAllUnapprovedAccounts()
 	{
 		try
 		{
@@ -38,20 +38,20 @@ class AdminService
 	function approveAccount($id){
 
         try
-			{				
+			{
 				$db = DB::getConnection();
 				$st = $db->prepare( 'UPDATE projekt_racun SET odobren=1 WHERE id=:id' );
 				$st->execute( array( 'id' => $id ) );
 			}
 		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
     }
-    
+
     function sendEmail($oib, $poruka)
     {
         try
 		{
 			$db = DB::getConnection();
-			$st = $db->prepare( 'SELECT oib, ime, email, prezime, FROM projekt_korisnik WHERE oib=:oib' );
+			$st = $db->prepare( 'SELECT oib, ime, email, prezime FROM projekt_korisnik WHERE oib=:oib' );
 
 			$st->execute( array( 'oib' => $oib) );
 		}
