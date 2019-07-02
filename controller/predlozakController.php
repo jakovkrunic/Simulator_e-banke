@@ -171,6 +171,26 @@ class PredlozakController extends BaseController
     }
   }
 
+	public function plati()
+	{
+		$ps = new PredlozakService();
+		$this->registry->template->predlozak = $ps->getTemplateById( $_GET['id_predlozak'] );
+		$this->registry->template->naslov = 'Plaćanje putem predloška';
+		$this->registry->template->message = '';
+		$this->registry->template->show( 'predlozak_plati' );
+	}
+
+	public function transakcija()
+	{
+		$ps = new PredlozakService();
+		$ts = new TransactionService();
+		$predlozak = $ps->getTemplateById( $_GET['id_predlozak'] );
+		$ts->insertNewTransaction($predlozak->ime, $predlozak->racun_posiljatelj, $predlozak->racun_primatelj, $predlozak->valuta, $_POST['iznos'] );
+		$this->registry->template->naslov = 'Uspješno ste poslali zahtjev za transakcijom!';
+		$this->registry->template->message = '';
+		$this->registry->template->show( 'predlozak_kraj' );
+	}
+
 	public function izmijeni()
 	{
 		$ps = new PredlozakService();

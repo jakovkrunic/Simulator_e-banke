@@ -22,6 +22,7 @@
 					 '<td>' . $tipovi2[$i] . '</td>' .
            '<td>' . $interni[$i]->racun_primatelj . '</td>' .
 			     '<td>' . $interni[$i]->valuta . '</td>' .
+					 '<td><a href="index.php?rt=predlozak/plati&id_predlozak='.$interni[$i]->id.'">Unos</a></td>' .
 					 '<td><a href="index.php?rt=predlozak/izmijeni&id_predlozak='.$interni[$i]->id.'">Izmijeni</a></td>' .
 					 '<td><a href="index.php?rt=predlozak/obrisi&id_predlozak='.$interni[$i]->id.'" class="brisanje">Obriši</a></td>' .
 			     '</tr>';

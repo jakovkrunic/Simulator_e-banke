@@ -20,6 +20,7 @@
 			     '<td>' . $tipovi[$i] . '</td>' .
            '<td>' . $platni[$i]->racun_primatelj . '</td>' .
 			     '<td>' . $platni[$i]->valuta . '</td>' .
+					 '<td><a href="index.php?rt=predlozak/plati&id_predlozak='.$platni[$i]->id.'">Unos</a></td>' .
 					 '<td><a href="index.php?rt=predlozak/izmijeni&id_predlozak='.$platni[$i]->id.'">Izmijeni</a></td>' .
 					 '<td><a href="index.php?rt=predlozak/obrisi&id_predlozak='.$platni[$i]->id.'" class="brisanje">Obriši</a></td>' .
 			     '</tr>';
