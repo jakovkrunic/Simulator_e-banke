@@ -11,6 +11,10 @@
       <?php
           foreach ($accts as $key)
              echo "<option value=".$key->id.">".$key->id . " (". $key->valuta_racuna . ")" ."</option>";
+
+          foreach ($assigneeaccts as $opacct){
+            echo "<option value=".$opacct->id.">". $opacct->id. " (". $opacct->valuta_racuna . ")" . "</option>";
+            }
       ?>
       </select><br>
       <label>Unesite racun primatelja:</label>

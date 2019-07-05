@@ -39,7 +39,17 @@ class TransactionController extends BaseController
 		$ac = new AccountService();
 		$racuni=$ac->getAllUserAccounts($_SESSION['oib']);
 		$this->registry->template->accts = $racuni;
+
+		$op_racuni = $ac->getAllAssigneeAccountsFromOIB($_SESSION['oib']);
+
+		$arr= [];
+		for($i=0;$i<count($op_racuni);$i++){
+			$arr[]=$ac->getAccountById($op_racuni[$i]);
+		}
+		$this->registry->template->assigneeaccts= $arr;
+
 		$this->registry->template->show( 'transaction_new' );
+
 
 	}
 	public function save()
