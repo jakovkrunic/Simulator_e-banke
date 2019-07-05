@@ -10,7 +10,7 @@
 	<input type="text" autocomplete="off" name="primatelj" value ="<?php echo $predlozak->racun_primatelj;?>"><br>
 	Valuta:
 	<input type="text" autocomplete="off" name="valuta" value ="<?php echo $predlozak->valuta;?>"><br>
-	<button type="submit" name="izmijeni">Izmijeni!</button>
+	<button class="button" type="submit" name="izmijeni">Izmijeni!</button>
 </form><br>
 <a href="index.php?rt=predlozak">Povratak na izbornik predložaka.</a>
 <?php echo '<br>' . $message . '<br>';

@@ -13,7 +13,7 @@
 	<?php echo $predlozak->valuta;?><br>
 	Iznos:
 	<input type="number" name="iznos"><br>
-	<button type="submit" name="izmijeni">Pošalji zahtjev za transakcijom!</button>
+	<button class="button" type="submit" name="izmijeni">Pošalji zahtjev za transakcijom!</button>
 </form><br>
 <a href="index.php?rt=predlozak">Povratak na izbornik predložaka.</a>
 <?php echo '<br>' . $message . '<br>';
