@@ -5,7 +5,26 @@ class AccountController extends BaseController
 	public function index()
 	{
 		$as = new AccountService();
-		$this->registry->template->racuni = $as->getAllUserAccounts($_SESSION['oib']);
+		$us = new UserService();
+		$racuni = $as->getAllUserAccounts($_SESSION['oib']);
+		$op_racuni = array();
+		$korisnici = array();
+		foreach ($racuni as $racun)
+		{
+			$oibi=$as->getAllAccountAssigneesOIB($racun->id);
+			$opunomocenici = array();
+			foreach ($oibi as $oib)
+				$opunomocenici[] = $us->getUserByOIB($oib);
+
+			if(!empty($opunomocenici))
+			{
+				$op_racuni[]=$racun;
+				$korisnici[]=$opunomocenici;
+			}
+		}
+		$this->registry->template->racuni = $racuni;
+		$this->registry->template->op_racuni = $op_racuni;
+		$this->registry->template->korisnici = $korisnici;
 		$this->registry->template->show( 'account_index' );
 	}
 
@@ -22,9 +41,9 @@ class AccountController extends BaseController
  				$vrsteRacuna = array_diff($vrsteRacuna, array("tekuci"));
 			}
 			else if($vrsta == 'ziro'){
- 				$vrsteRacuna = array_diff($vrsteRacuna, array("ziro"));				
+ 				$vrsteRacuna = array_diff($vrsteRacuna, array("ziro"));
 			}
-			else if($vrsta == 'devizni'){				
+			else if($vrsta == 'devizni'){
  				$vrsteRacuna = array_diff($vrsteRacuna, array("devizni"));
 			}
 		}
@@ -34,9 +53,9 @@ class AccountController extends BaseController
 		$this->registry->template->show( 'otvaranje_racuna' );
 
 	}
-	
+
 	public function save()
-	{		
+	{
 		$as = new AccountService();
 
 		$vrsta = $_POST['vrsta'];
@@ -45,14 +64,72 @@ class AccountController extends BaseController
 		$oib = $_SESSION['oib'];
 
 		$as->openAccount($oib, $vrsta, $valuta, $minus);
-		
-		
+
+
 		$this->registry->template->racuni = $as->getAllUserAccounts($_SESSION['oib']);
 		$this->registry->template->show( 'account_index' );
 
 	}
 
+	public function punomoc()
+	{
+		$as = new AccountService();
+		$this->registry->template->racun = $as->getAccountById( $_GET['id_racun'] );
+		$this->registry->template->naslov = 'Zahtjev za davanje punomoći';
+		$this->registry->template->message = '';
+		$this->registry->template->show( 'account_punomoc' );
+	}
 
+	public function provjera()
+	{
+		$as = new AccountService();
+		$us = new UserService();
+		$svi = $us->getAllUsers();
+		$id_racuna = $_GET['id_racun'];
+		$oib_opunomocenika = $_POST['oib'];
+		$oibi = $as->getAllAccountAssigneesOIB($id_racuna);
+		if($_SESSION['oib'] == $oib_opunomocenika)
+		{
+			$this->registry->template->racun = $as->getAccountById( $_GET['id_racun'] );
+			$this->registry->template->naslov = 'Zahtjev za davanje punomoći';
+			$this->registry->template->message = 'Ne možete sami sebi biti opunomoćenik!';
+			$this->registry->template->show( 'account_punomoc' );
+		}
+		else if(in_array($oib_opunomocenika, $oibi))
+		{
+			$this->registry->template->racun = $as->getAccountById( $_GET['id_racun'] );
+			$this->registry->template->naslov = 'Zahtjev za davanje punomoći';
+			$this->registry->template->message = 'Osoba s unesenim OIB-om već ima punomoć nad Vašim računom!';
+			$this->registry->template->show( 'account_punomoc' );
+		}
+		else
+		{
+			$test = false;
+			foreach($svi as $korisnik)
+			{
+				if($korisnik->oib == $oib_opunomocenika)
+				{
+					$test = true;
+					break;
+				}
+			}
+			if(!$test)
+			{
+				$this->registry->template->racun = $as->getAccountById( $_GET['id_racun'] );
+				$this->registry->template->naslov = 'Zahtjev za davanje punomoći';
+				$this->registry->template->message = 'Uneseni OIB nije u evidenciji naše banke!';
+				$this->registry->template->show( 'account_punomoc' );
+			}
+			else
+			{
+				$as->insertNewAssignee($id_racuna, $oib_opunomocenika);
+				$this->registry->template->naslov = 'Zahtjev za davanje punomoći';
+				$this->registry->template->message = 'Uspješno ste predali zahtjev za punomoć!';
+				$this->registry->template->show( 'account_kraj' );
+			}
+		}
+
+	}
 
 };
 

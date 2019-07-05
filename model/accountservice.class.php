@@ -55,7 +55,38 @@ class AccountService
 
 	}
 
+	function getAllAccountAssigneesOIB($id_racuna) 			//vrati niz OIB-a ljudi koji imaju punomoc nad racunom ciji je id $id_racuna
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT * FROM projekt_punomoc WHERE id_racuna=:id_racuna AND odobren=:odobren' );
+			$st->execute( array( 'id_racuna' => $id_racuna , 'odobren' => 1) );
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
 
+		$arr = array();
+		while( $row = $st->fetch() )
+		{
+			$arr[] = $row['oib_opunomocenika'];
+		}
+
+		return $arr;
+
+	}
+
+	function insertNewAssignee($id_racuna, $oib_opunomocenika) 			//unesi novu punomoc
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'INSERT INTO projekt_punomoc(id_racuna, oib_opunomocenika, odobren) VALUES (:id_racuna,
+													:oib_opunomocenika, :odobren)' );
+			$st->execute( array( 'id_racuna' => $id_racuna, 'oib_opunomocenika' => $oib_opunomocenika, 'odobren' => 0 ) );
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+
+	}
 
 };
 

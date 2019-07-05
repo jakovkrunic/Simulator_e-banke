@@ -1,5 +1,6 @@
 <?php require_once 'view/_header.php';
 ?>
+<script src="./js/login.js"></script>
 <h2><?php echo $naslov; ?></h2>
 <form method="post" action="<?php echo __SITE_URL . '/index.php?rt=predlozak/transakcija&id_predlozak='.$predlozak->id?>">
 	Naziv predloška:
