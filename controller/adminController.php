@@ -15,7 +15,7 @@ class AdminController extends BaseController
         $this->registry->template->show( 'admin_requests' );       
     }
 
-    public function approve(){
+    public function approve(){ //approve User
         if( !isset( $_GET['oib'])) {            
             $this->registry->template->title = "Administracija korisnika";
             $this->registry->template->message = "Nije odabran OIB!";
@@ -50,6 +50,27 @@ class AdminController extends BaseController
         
     }
 
+    public function reject() //reject User
+    {
+        if( !isset( $_GET['oib'])) 
+        {            
+            $this->registry->template->title = "Administracija korisnika";
+            $this->registry->template->message = "Nije odabran OIB!";
+            $this->registry->template->show( 'admin_requests' );    
+        }
+
+        $as = new AdminService();
+
+		$oib = $_GET['oib'];
+
+		$poruka = $as->rejectUser($oib);
+        
+        $this->registry->template->poruka = '';
+        $this->registry->template->zahtjevi = $as->getUnapprovedUsers();
+        $this->registry->template->title = "Administracija korisnika";
+        $this->registry->template->show( 'admin_requests' );  
+    }
+
     public function unapprovedAcc()
     {
 
@@ -60,14 +81,6 @@ class AdminController extends BaseController
 		$this->registry->template->show( 'odobrenje_racuna' );
     }
     
-    public function transactions()
-    {
-        $as = new AdminService();
-
-		$this->registry->template->transakcije = $as->getAllUnapprovedTransactions();		
-		$this->registry->template->naslov = "Odobravanje transakcija";
-		$this->registry->template->show( 'admin_transakcije' );
-    }
 
 	public function approveAcc()
 	{
@@ -80,6 +93,30 @@ class AdminController extends BaseController
 		$this->registry->template->racuni = $as->getAllUnapprovedAccounts();		
 		$this->registry->template->naslov = "Odobravanje računa";
 		$this->registry->template->show( 'odobrenje_racuna' );
+    }
+
+    public function rejectAcc()
+    {
+        $as = new AdminService();
+
+		$id = $_GET['id'];
+
+        $poruka = $as->rejectAccount($id);
+        
+        $this->registry->template->poruka = $poruka;
+
+		$this->registry->template->racuni = $as->getAllUnapprovedAccounts();		
+		$this->registry->template->naslov = "Odobravanje računa";
+		$this->registry->template->show( 'odobrenje_racuna' );
+    }
+
+    public function transactions()
+    {
+        $as = new AdminService();
+
+		$this->registry->template->transakcije = $as->getAllUnapprovedTransactions();		
+		$this->registry->template->naslov = "Odobravanje transakcija";
+		$this->registry->template->show( 'admin_transakcije' );
     }
     
     public function openSavingForm()

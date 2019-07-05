@@ -10,8 +10,11 @@ echo '<table align="center"><th>OIB</th><th>Ime</th><th>Prezime</th><th>Email</t
 
 <td>
 		<form method="post" action="<?php echo __SITE_URL . '/index.php?rt=admin/approve&oib=' . $user['oib']. '&registriran='. $user['registriran']?>">
-			<button class="button" type="submit">Accept!</button>
-		</form>	
+			<button class="button" type="submit">Odobri!</button>
+		</form>	<br>
+		<form method="post" action="<?php echo __SITE_URL . '/index.php?rt=admin/reject&oib=' . $user['oib']. '&registriran='. $user['registriran']?>">
+			<button class="button" type="submit">Odbij!</button>
+		</form>
 		</td></tr>
                 <?php
 			}

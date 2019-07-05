@@ -12,7 +12,10 @@ echo '<table align="center"><th>OIB</th><th>Vrsta računa</th><th>Željeno preko
 ?>
 <td>
 		<form method="post" action="<?php echo __SITE_URL . '/index.php?rt=admin/approveAcc&id='.$racun->id?>">
-			<button class="button" type="submit">Accept!</button>
+			<button class="button" type="submit">Odobri!</button>
+		</form>	<br>
+		<form method="post" action="<?php echo __SITE_URL . '/index.php?rt=admin/rejectAcc&id='.$racun->id?>">
+			<button class="button" type="submit">Odbij!</button>
 		</form>	
 		</td></tr>
                 <?php

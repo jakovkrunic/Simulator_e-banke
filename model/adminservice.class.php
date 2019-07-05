@@ -13,7 +13,45 @@ class AdminService
         }
 
         return $zahtjevi;
-    }
+	}
+	
+	function rejectUser($oib)
+	{
+		$db = DB::getConnection();
+
+		try
+		{
+			$st = $db->prepare( 'SELECT oib, ime, email, prezime FROM projekt_korisnik WHERE oib=:oib' );
+			$st->execute( array( 'oib' => $oib ));
+		}
+        catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
+		$row = $st->fetch();
+
+		try
+		{
+			$st = $db->prepare( 'DELETE FROM projekt_korisnik WHERE oib=:oib' );
+			$st->execute( array( 'oib' => $oib) );
+		}
+		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
+
+		
+		$to       = $row['email'];
+		$subject  = 'Povratni mail';
+		$message  = 'Poštovani ' . $row['ime'] . ', ' . $row['prezime'] . ' (OIB: ' . $row['oib'] . ')' . "!\n";
+			$message .= 'Administrator Vam nije prihvatio zahtjev za izradu korisničkog računa.' . "\n";
+			
+		$headers  = 'From: rp2@studenti.math.hr' . "\r\n" .
+		'Reply-To: rp2@studenti.math.hr' . "\r\n" .
+		'X-Mailer: PHP/' . phpversion();
+
+		$isOK = mail($to, $subject, $message, $headers);
+
+		if( !$isOK )
+			return 'Mail se ne može poslati.';
+
+		//Zahvali mu na prijavi.
+		return 'ok';
+	}
 
     function getAllUnapprovedAccounts()
 	{
@@ -35,26 +73,6 @@ class AdminService
 		return $arr;
 	}
 
-	function getAllUnapprovedTransactions()
-	{
-		try
-		{
-			$db = DB::getConnection();
-			$st = $db->prepare( 'SELECT * FROM projekt_transakcija WHERE odobrena=0' );
-			$st->execute();
-		}
-		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
-
-		$arr = array();
-		while( $row = $st->fetch() )
-		{
-			$arr[] = new Transaction($row['id'], $row['opis'], $row['racun_posiljatelj'] ,
-					$row['racun_primatelj'], $row['valuta'], $row['iznos'], $row['odobrena'], $row['datum']);
-			
-		}
-
-		return $arr;
-	}
 
 	function approveAccount($id){
 
@@ -65,7 +83,50 @@ class AdminService
 				$st->execute( array( 'id' => $id ) );
 			}
 		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
-    }
+	}
+	
+	function rejectAccount($id)
+	{
+		$db = DB::getConnection();
+		try
+		{
+			$st = $db->prepare( 'SELECT oib FROM projekt_racun WHERE id=:id' );
+			$st->execute( array( 'id' => $id) );
+		}
+		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
+		$oib_korisnika = $st->fetch();
+
+		try
+		{
+			$st = $db->prepare( 'DELETE FROM projekt_racun WHERE id=:id' );
+			$st->execute( array( 'id' => $id) );
+		}
+		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
+
+		try
+		{
+			$st = $db->prepare( 'SELECT oib, ime, email, prezime FROM projekt_korisnik WHERE oib=:oib' );
+			$st->execute( array( 'oib' => $oib_korisnika['oib']) );
+		}
+        catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
+		$row = $st->fetch();
+		$to       = $row['email'];
+		$subject  = 'Povratni mail';
+		$message  = 'Poštovani ' . $row['ime'] . ', ' . $row['prezime'] . ' (OIB: ' . $row['oib'] . ')' . "!\n";
+			$message .= 'Administrator Vam nije prihvatio zahtjev za izradu računa.' . "\n";
+			
+		$headers  = 'From: rp2@studenti.math.hr' . "\r\n" .
+		'Reply-To: rp2@studenti.math.hr' . "\r\n" .
+		'X-Mailer: PHP/' . phpversion();
+
+		$isOK = mail($to, $subject, $message, $headers);
+
+		if( !$isOK )
+			return 'Mail se ne može poslati.';
+
+		//Zahvali mu na prijavi.
+		return 'ok';
+	}
 
     function sendEmail($oib, $poruka)
     {
@@ -107,6 +168,7 @@ class AdminService
 		//Zahvali mu na prijavi.
 		return 'ok';
 	}
+
 	
 	function checkUser($ime, $prezime, $oib)
 	{
@@ -190,6 +252,27 @@ class AdminService
 		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
 		return "Uspješno ste otvorili kredit.";
 		
+	}
+
+	function getAllUnapprovedTransactions()
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT * FROM projekt_transakcija WHERE odobrena=0' );
+			$st->execute();
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+
+		$arr = array();
+		while( $row = $st->fetch() )
+		{
+			$arr[] = new Transaction($row['id'], $row['opis'], $row['racun_posiljatelj'] ,
+					$row['racun_primatelj'], $row['valuta'], $row['iznos'], $row['odobrena'], $row['datum']);
+			
+		}
+
+		return $arr;
 	}
 }
 ?>
