@@ -161,6 +161,13 @@ class PredlozakController extends BaseController
 				$this->registry->template->show( $str );
 				exit();
 			}
+			if($as->getAccountById($_POST['primatelj']) == null)
+			{
+				$this->registry->template->naslov = $title;
+				$this->registry->template->message = 'Račun primatelja ne postoji u našoj banci!';
+				$this->registry->template->show( $str );
+				exit();
+			}
 			if($akcija == 'stvori')
 			{
 				$ps->insertNewTemplate($_POST['ime'], $_POST['moj'], $_POST['primatelj'], $_POST['valuta'] );
