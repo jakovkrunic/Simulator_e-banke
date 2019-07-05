@@ -127,9 +127,10 @@ class PredlozakController extends BaseController
 			$this->registry->template->show( $str );
 			exit();
 		}
-    else
+		else
 		{
       $racuni = $as->getAllUserAccounts($_SESSION['oib']);
+			$op_racuni = $as->getAllAssigneeAccountsFromOIB($_SESSION['oib']);
 			$test = false;
 			foreach( $racuni as $racun )
 			{
@@ -139,10 +140,18 @@ class PredlozakController extends BaseController
 					break;
 				}
 			}
+			for($i=0;$i<count($op_racuni);$i++)
+			{
+				if($_POST['moj'] == $op_racuni[$i])
+				{
+					$test = true;
+					break;
+				}
+			}
 			if(!$test)
 			{
 				$this->registry->template->naslov = $title;
-				$this->registry->template->message = 'U rubrici Broj mog računa ste unijeli račun koji nije Vaš!';
+				$this->registry->template->message = 'U rubrici Broj mog računa ste unijeli račun koji nije Vaš ili račun nad kojim nemate punomoć!';
 				$this->registry->template->show( $str );
 				exit();
 			}
