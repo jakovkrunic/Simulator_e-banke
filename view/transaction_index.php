@@ -16,6 +16,9 @@
  		</form>	<br>
 
  <h2> Poslane transakcije</h2>
+ <div  style="align: center; height:400px; width: 60%;
+  margin: 0 auto;
+	font:16px/26px Georgia, Garamond, Serif; overflow:auto;">
 <table align="center">
 	<tr>
     <th>Opis</th>
@@ -85,8 +88,11 @@
 		}
 	?>
 </table>
+</div>
 <br>
 <h2> Primljene transakcije</h2>
+<div  style="align: center; height:400px; width: 60%;
+ margin: 0 auto;  overflow:auto;">
 <table align="center">
 	<tr>
     <th>Opis</th>
@@ -136,6 +142,7 @@
 	}
 	?>
 </table>
+</div>
 <br>
 
 <?php
