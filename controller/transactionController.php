@@ -62,56 +62,41 @@ class TransactionController extends BaseController
 
 		$ac=new AccountService();
 		$racun=$ac->getAccountById($posiljatelj);
-		if(($racun->stanje_racuna-$racun->dozvoljeni_minus)>$iznos){
+		$prim=$ac->getAccountById($racun_primatelj);
+		if($prim===null){
+			$transactions=$Trans->getAllTransactions($_SESSION['oib']);
+			$this->registry->template->poruka= "Primatelj ne postoji";
+		}
+		else if( $prim!==null && ($racun->stanje_racuna-$racun->dozvoljeni_minus)>$iznos){
 			$valuta=$racun->valuta_racuna;
 
 			$ac->updateAmount($posiljatelj,$iznos);
 			$Trans->insertNewTransaction($opis,$posiljatelj,$racun_primatelj,$valuta,$iznos);
 			$transactions=$Trans->getAllTransactions($_SESSION['oib']);
 			$this->registry->template->poruka= "Uspjesno ste poslali zahtjev za transakcijom! Transakcija će biti odobrena ili odbijena za 3-5 dana.";
-			$this->registry->template->transactions = $transactions;
-			$incomingtransactions=$Trans->getAllIncomingTransactions($_SESSION['oib']);
-			$this->registry->template->incomingtransactions = $incomingtransactions;
-
-			$op_racuni = $ac->getAllAssigneeAccountsFromOIB($_SESSION['oib']);
-			$arr= [];
-			for($i=0;$i<count($op_racuni);$i++){
-				$arr[]=$Trans->getTransactionsBySenderId($op_racuni[$i]);
-			}
-			$this->registry->template->assigneetrans= $arr;
-
-			$arr= [];
-			for($i=0;$i<count($op_racuni);$i++){
-				$arr[]=$Trans->getIncomingTransactionsBySenderId($op_racuni[$i]);
-			}
-			$this->registry->template->incomingassigneetrans= $arr;
-
-			$this->registry->template->show( 'transaction_index' );
-
 		}
 		else{
 			$transactions=$Trans->getAllTransactions($_SESSION['oib']);
 			$this->registry->template->poruka= "Nemate toliko novaca na računu!";
-			$this->registry->template->transactions = $transactions;
-			$incomingtransactions=$Trans->getAllIncomingTransactions($_SESSION['oib']);
-			$this->registry->template->incomingtransactions = $incomingtransactions;
-
-			$op_racuni = $ac->getAllAssigneeAccountsFromOIB($_SESSION['oib']);
-			$arr= [];
-			for($i=0;$i<count($op_racuni);$i++){
-				$arr[]=$Trans->getTransactionsBySenderId($op_racuni[$i]);
-			}
-			$this->registry->template->assigneetrans= $arr;
-
-			$arr= [];
-			for($i=0;$i<count($op_racuni);$i++){
-				$arr[]=$Trans->getIncomingTransactionsBySenderId($op_racuni[$i]);
-			}
-			$this->registry->template->incomingassigneetrans= $arr;
-
-			$this->registry->template->show( 'transaction_index' );
-
 		}
+		$this->registry->template->transactions = $transactions;
+		$incomingtransactions=$Trans->getAllIncomingTransactions($_SESSION['oib']);
+		$this->registry->template->incomingtransactions = $incomingtransactions;
+
+		$op_racuni = $ac->getAllAssigneeAccountsFromOIB($_SESSION['oib']);
+		$arr= [];
+		for($i=0;$i<count($op_racuni);$i++){
+			$arr[]=$Trans->getTransactionsBySenderId($op_racuni[$i]);
+		}
+		$this->registry->template->assigneetrans= $arr;
+
+		$arr= [];
+		for($i=0;$i<count($op_racuni);$i++){
+			$arr[]=$Trans->getIncomingTransactionsBySenderId($op_racuni[$i]);
+		}
+		$this->registry->template->incomingassigneetrans= $arr;
+
+		$this->registry->template->show( 'transaction_index' );
 
 	}
 
