@@ -9,28 +9,7 @@
     <label>Prezime: </label> <input type="text" name="prezime"/> 
     <label>OIB: </label> <input type="text" name="oib"> <br><br>
 
-    <label>Iznos kredita: </label> <input type="text" name="iznos"/> <br>
-    <label>Kamatna stopa: </label> <input type="text" name="kamatna_stopa"/> <br>    
-    <label>Mjesečna rata plaćanja: </label> <input type="text" name="rata"/> <br>
-    
-    <label>Valuta: </label> 
-    <select name='valuta'>
-    <option value='HRK' selected >HRK</option>
-    <option value='AUD'>AUD</option>
-    <option value='BAM'>BAM</option>
-    <option value='CAD'>CAD</option>
-    <option value='CHF'>CHF</option>
-    <option value='DKK'>DKK</option>
-    <option value='EUR'>EUR</option>
-    <option value='GBP'>GBP</option>
-    <option value='JPY'>JPY</option>
-    <option value='NOK'>NOK</option>
-    <option value='RSD'>RSD</option>
-    <option value='SEK'>SEK</option>
-    <option value='USD'>USD</option>
-    </select><br>  <br>
-
-    <button class="button" type="submit">Otvori štednju korisniku!</button>
+    <button class="button" type="submit">Otvori kredit korisniku!</button>
 </form>	
 
 <?php

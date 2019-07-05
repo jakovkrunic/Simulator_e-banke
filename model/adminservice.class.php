@@ -120,5 +120,55 @@ class AdminService
 		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
 		return "Uspješno ste otvorili štednju.";
 	}
+
+	function getUserAccounts($oib)
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT * FROM projekt_racun WHERE oib=:oib AND odobren=:odobren' );
+			$st->execute( array( 'oib' => $oib , 'odobren' => 1) );
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+
+		$arr = array();
+		while( $row = $st->fetch() )
+		{
+			$arr[] = new Account($row['id'], $row['oib'], $row['tip_racuna'] ,
+											$row['valuta_racuna'], $row['stanje_racuna'],	$row['datum_izrade'], $row['odobren'], $row['dozvoljeni_minus']);
+		}
+
+		return $arr;
+	}
+
+	function addCredit($oib, $iznos, $kamatna_stopa, $valuta, $racun, $rata)
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT id FROM projekt_racun WHERE oib=:oib AND tip_racuna=:tip' );
+			$st->execute( array( 'oib' => $oib , 'tip' => $racun) );
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+		$racun_id = $st->fetch();
+		
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'INSERT INTO projekt_kredit(oib, id_racuna, iznos_kredita, kamatna_stopa, rata_placanja, valuta) VALUES ' .
+				                '(:oib, :id, :iznos, :kam, :rata, :val)' );
+
+			$st->execute( array( 'oib' => $oib,
+								 'id' => $racun_id['id'],
+								 'iznos' => $iznos,	
+								 'kam' => $kamatna_stopa,
+								 'rata' =>$rata,
+								 'val' => $valuta		                 
+				                  ) );
+		}
+		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
+		return "Uspješno ste otvorili kredit.";
+		
+	}
 }
 ?>

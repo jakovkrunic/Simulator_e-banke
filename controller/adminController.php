@@ -157,6 +157,88 @@ class AdminController extends BaseController
         $this->registry->template->show( 'admin_openCreditUser' );
     }
 
+    public function openCreditUser()
+    {
+        if( !isset( $_POST['oib']) || !isset($_POST['ime']) || !isset($_POST['prezime'])) {            
+            $this->registry->template->title = "Otvaranje kredita";
+            $this->registry->template->poruka = "Nisu upisani svi podaci";
+            $this->registry->template->show( 'admin_openCreditUser' );    
+        }
+        else
+        {
+        
+            $ime = $_POST['ime'];
+            $oib = $_POST['oib'];
+            $prezime = $_POST['prezime'];
+
+            $_SESSION['oib_korisnika'] = $oib;
+            $_SESSION['ime_korisnika'] = $ime;
+            $_SESSION['prezime_korisnika'] = $prezime;
+
+            $as = new AdminService();
+            $poruka = $as -> checkUser($ime, $prezime, $oib);
+            
+            if($poruka === 'OK')
+            {
+                //ako je ok, trebamo njegove račune
+                $racuni = $as -> getUserAccounts($oib);
+
+                $this->registry->template->racuni = $racuni;
+                $this->registry->template->oib_korisnika = $oib;	
+                $this->registry->template->ime_korisnika = $ime;	
+                $this->registry->template->prezime_korisnika = $prezime;		
+                $this->registry->template->naslov = "Otvaranje kredita";
+                $this->registry->template->show( 'admin_openCreditForm' );
+            }
+            else 
+            {
+                $this->registry->template->poruka = "Podaci se ne poklapaju ili korisnik ne postoji.";		
+                $this->registry->template->naslov = "Otvaranje kredita";
+                $this->registry->template->show( 'admin_openCreditUser' ); 
+            }
+
+            
+        }
+
+    }
+
+    public function openCreditOpen()
+    {
+        if(!isset($_POST['iznos']) || !is_numeric($_POST['iznos']) || !isset($_POST['kamatna_stopa']) || !is_numeric($_POST['kamatna_stopa']) || !isset($_POST['rata']) || !is_numeric($_POST['rata']))
+        {
+            $this->registry->template->oib_korisnika = $_SESSION['oib_korisnika'];	
+            $this->registry->template->ime_korisnika = $_SESSION['ime_korisnika'];	
+            $this->registry->template->prezime_korisnika = $_SESSION['prezime_korisnika'];
+
+            $this->registry->template->poruka = "Niste unijeli potrebne podatke ili ste ih unijeli neispravno.";		
+            $this->registry->template->naslov = "Otvaranje kredita";
+            $this->registry->template->show( 'admin_openCreditForm' ); 
+        }
+        else
+        { 
+            $ime = $_SESSION['ime_korisnika'];
+            $oib = $_SESSION['oib_korisnika'];
+            $prezime = $_SESSION['prezime_korisnika'];
+            $iznos = floatval($_POST['iznos']);
+            $kamatna_stopa = floatval($_POST['kamatna_stopa']);
+            $rata = floatval($_POST['rata']);
+            $valuta = $_POST['valuta'];
+            $racun = $_POST['vrsta'];
+
+            $as = new AdminService();
+            $poruka = $as -> addCredit($oib, $iznos, $kamatna_stopa, $valuta, $racun, $rata);
+
+            unset($_SESSION['oib_korisnika']);
+            unset($_SESSION['ime_korisnika']);
+            unset($_SESSION['prezime_korisnika']);
+
+            $this->registry->template->poruka = $poruka;		
+            $this->registry->template->naslov = "Otvaranje kredita";
+            $this->registry->template->show( 'admin_openCreditUser' ); 
+        }
+    }
+
+
 
 };
 

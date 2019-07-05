@@ -1,8 +1,5 @@
 <?php require_once 'view/admin_header.php';
 
-
-// ovo tu ne radi nista, ali ostavit cu... Bila je dobra ideja ali mi ne salje POST ove value i nemrem pronaci na netu zakaj...
-// ako tko to mozda zna, da se doda ovako ;)
 ?>
 
 <br>
