@@ -12,6 +12,7 @@
     <th>Valuta</th>
 		<th></th>
 		<th></th>
+		<th></th>
   </tr>
 	<?php
 		for($i=0;$i<count($interni);$i++)
