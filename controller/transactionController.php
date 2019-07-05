@@ -4,11 +4,31 @@ class TransactionController extends BaseController
 {
 	public function index()
 	{
+		$as = new AccountService();
 		$Trans= new TransactionService();
 		$transactions=$Trans->getAllTransactions($_SESSION['oib']);
 		$this->registry->template->transactions = $transactions;
+
 		$incomingtransactions=$Trans->getAllIncomingTransactions($_SESSION['oib']);
 		$this->registry->template->incomingtransactions = $incomingtransactions;
+
+
+		$op_racuni = $as->getAllAssigneeAccountsFromOIB($_SESSION['oib']);
+		$arr= [];
+		for($i=0;$i<count($op_racuni);$i++){
+			$arr[]=$Trans->getTransactionsBySenderId($op_racuni[$i]);
+		}
+		$this->registry->template->assigneetrans= $arr;
+
+		$arr= [];
+		for($i=0;$i<count($op_racuni);$i++){
+			$arr[]=$Trans->getIncomingTransactionsBySenderId($op_racuni[$i]);
+		}
+		$this->registry->template->incomingassigneetrans= $arr;
+
+
+
+
 		$this->registry->template->show( 'transaction_index' );
 
 
@@ -42,6 +62,20 @@ class TransactionController extends BaseController
 			$this->registry->template->transactions = $transactions;
 			$incomingtransactions=$Trans->getAllIncomingTransactions($_SESSION['oib']);
 			$this->registry->template->incomingtransactions = $incomingtransactions;
+
+			$op_racuni = $ac->getAllAssigneeAccountsFromOIB($_SESSION['oib']);
+			$arr= [];
+			for($i=0;$i<count($op_racuni);$i++){
+				$arr[]=$Trans->getTransactionsBySenderId($op_racuni[$i]);
+			}
+			$this->registry->template->assigneetrans= $arr;
+
+			$arr= [];
+			for($i=0;$i<count($op_racuni);$i++){
+				$arr[]=$Trans->getIncomingTransactionsBySenderId($op_racuni[$i]);
+			}
+			$this->registry->template->incomingassigneetrans= $arr;
+
 			$this->registry->template->show( 'transaction_index' );
 
 		}
@@ -51,6 +85,20 @@ class TransactionController extends BaseController
 			$this->registry->template->transactions = $transactions;
 			$incomingtransactions=$Trans->getAllIncomingTransactions($_SESSION['oib']);
 			$this->registry->template->incomingtransactions = $incomingtransactions;
+
+			$op_racuni = $ac->getAllAssigneeAccountsFromOIB($_SESSION['oib']);
+			$arr= [];
+			for($i=0;$i<count($op_racuni);$i++){
+				$arr[]=$Trans->getTransactionsBySenderId($op_racuni[$i]);
+			}
+			$this->registry->template->assigneetrans= $arr;
+
+			$arr= [];
+			for($i=0;$i<count($op_racuni);$i++){
+				$arr[]=$Trans->getIncomingTransactionsBySenderId($op_racuni[$i]);
+			}
+			$this->registry->template->incomingassigneetrans= $arr;
+
 			$this->registry->template->show( 'transaction_index' );
 
 		}
@@ -81,6 +129,20 @@ class TransactionController extends BaseController
 		$this->registry->template->transactions = $transactions;
 		$incomingtransactions=$Trans->getAllIncomingTransactions($_SESSION['oib']);
 		$this->registry->template->incomingtransactions = $incomingtransactions;
+
+		$op_racuni = $ac->getAllAssigneeAccountsFromOIB($_SESSION['oib']);
+		$arr= [];
+		for($i=0;$i<count($op_racuni);$i++){
+			$arr[]=$Trans->getTransactionsBySenderId($op_racuni[$i]);
+		}
+		$this->registry->template->assigneetrans= $arr;
+
+		$arr= [];
+		for($i=0;$i<count($op_racuni);$i++){
+			$arr[]=$Trans->getIncomingTransactionsBySenderId($op_racuni[$i]);
+		}
+		$this->registry->template->incomingassigneetrans= $arr;
+
 		$this->registry->template->show( 'transaction_index' );
 	}
 };

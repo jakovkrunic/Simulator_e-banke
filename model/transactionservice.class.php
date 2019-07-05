@@ -39,6 +39,46 @@ class TransactionService
     return $arr;
 	}
 
+	function getIncomingTransactionsBySenderId($id_posiljatelja){
+		try
+    {
+      $db = DB::getConnection();
+      $st = $db->prepare( 'SELECT * FROM projekt_transakcija  WHERE racun_primatelj=:id_posiljatelja' );
+      $st->execute( array( 'id_posiljatelja' => $id_posiljatelja) );
+    }
+    catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+
+    $arr = array();
+    while( $row = $st->fetch() )
+    {
+      $arr[] = new Transaction($row['id'], $row['opis'], $row['racun_posiljatelj'] ,
+                      $row['racun_primatelj'],	$row['valuta'], $row['iznos'],
+											$row['odobrena'], $row['datum']);
+    }
+
+    return $arr;
+	}
+
+	function getTransactionsBySenderId($id_posiljatelja){
+		try
+    {
+      $db = DB::getConnection();
+      $st = $db->prepare( 'SELECT * FROM projekt_transakcija  WHERE racun_posiljatelj=:id_posiljatelja' );
+      $st->execute( array( 'id_posiljatelja' => $id_posiljatelja) );
+    }
+    catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+
+    $arr = array();
+    while( $row = $st->fetch() )
+    {
+      $arr[] = new Transaction($row['id'], $row['opis'], $row['racun_posiljatelj'] ,
+                      $row['racun_primatelj'],	$row['valuta'], $row['iznos'],
+											$row['odobrena'], $row['datum']);
+    }
+
+    return $arr;
+	}
+
 	function getAllTransactions($user_oib){
 		// ne moze oib, ili ce se morat joinat ili ce se morat spremit u sešn idevi racuna
 		// ili pozvat daj mi sve ideve i onda vrtit po tome

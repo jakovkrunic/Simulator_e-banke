@@ -53,6 +53,35 @@
 					 <?php }
 					 else echo '<td> </td>' ;
 			     echo '</tr>';
+			}
+			foreach ($assigneetrans as $trans) {
+
+			foreach($trans as $transaction)
+			{
+				echo '<tr>' .
+						 '<td>' . $transaction->opis . '</td>' .
+						 '<td>' . $transaction->racun_posiljatelj . '</td>' .
+						 '<td>' . $transaction->racun_primatelj . '</td>' .
+						 '<td>' . $transaction->iznos . '</td>' .
+						 '<td>' . $transaction->valuta . '</td>' ;
+						 if ($transaction->odobrena==1) echo
+						 '<td> Approved </td>' ;
+						 else if($transaction->odobrena==-1)echo
+						 '<td> Denied </td>' ;
+						 else echo '<td> Pending </td>' ;
+						 echo '<td>' . $transaction->datum . '</td>' ;
+						 if ($transaction->odobrena==0) { ?>
+						 <td>
+							 <form style = "text-align: center" method="post" action="<?php echo __SITE_URL . '/index.php?rt=transaction/undo'?>">
+										<input type="hidden" name="ponisti" value="<?php echo $transaction->id; ?>">
+										<button class="button" type="submit">Poništi</button>
+									</form>	<br>
+							 </td>
+
+						 <?php }
+						 else echo '<td> </td>' ;
+						 echo '</tr>';
+			}
 		}
 	?>
 </table>
@@ -85,6 +114,26 @@
            echo '<td>' . $transaction->datum . '</td>' ;
 			     echo '</tr>';
 		}
+
+		foreach ($incomingassigneetrans as $trans) {
+
+		foreach($trans as $transaction)
+		{
+			echo '<tr>' .
+					 '<td>' . $transaction->opis . '</td>' .
+					 '<td>' . $transaction->racun_posiljatelj . '</td>' .
+					 '<td>' . $transaction->racun_primatelj . '</td>' .
+					 '<td>' . $transaction->iznos . '</td>' .
+					 '<td>' . $transaction->valuta . '</td>' ;
+					 if ($transaction->odobrena==1) echo
+					 '<td> Approved </td>' ;
+					 else if($transaction->odobrena==-1)echo
+					 '<td> Denied </td>' ;
+					 else echo '<td> Pending </td>' ;
+					 echo '<td>' . $transaction->datum . '</td>' ;
+					 echo '</tr>';
+		}
+	}
 	?>
 </table>
 <br>
