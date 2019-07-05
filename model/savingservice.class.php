@@ -19,6 +19,16 @@ class SavingService{
 
     return $arr;
   }
+  function updateAmount($racun,$iznos)
+  {
+    try
+    {
+      $db = DB::getConnection();
+      $st = $db->prepare( 'UPDATE projekt_stednja SET  iznos_stednje=iznos_stednje+:iznos WHERE id=:id_racuna' );
+      $st->execute( array( 'id_racuna' => $racun, ':iznos' => $iznos ) );
+    }
+    catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+  }
 
 }
  ?>
