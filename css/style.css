@@ -7,12 +7,19 @@ ul
     overflow: hidden;
     border: 1px solid #e7e7e7;
     background-color: #f3f3f3;
+    font-size: 13.5px;
 }
 
 li
 {
     float: left;
     width: 16%;
+}
+
+li.adminovo {
+
+    float: left;
+    width: 14%;
 }
 
 li a
@@ -131,7 +138,7 @@ p.obavijesti {
 
 p.korisnici {
     float: left;
-    width: 33%;
+    width: 25%;
     border-radius: 5px;
     height:100px;
     font-size: 20px;

@@ -3,6 +3,7 @@
 <p class="obavijesti"> Obavijesti! </p>
 
 <div align="center">
+
 <p class="korisnici"> 
 <span class="unutra">
 Trenutno imate <?php echo $br_korisnika; ?> korisnika za odobriti ili odbiti.
@@ -10,7 +11,6 @@ Trenutno imate <?php echo $br_korisnika; ?> korisnika za odobriti ili odbiti.
 </p>
 
 <p class="korisnici"> 
-
 <span class="unutra">Trenutno imate <?php echo $br_racuna; if ($br_racuna % 10 === 1 && $br_racuna!== 11) echo " račun"; else echo " računa"; ?> za odobriti ili odbiti.
 </span>
 </p>
@@ -24,6 +24,11 @@ else echo " transakcija" ?> za odobriti ili odbiti.
 </span>
 
 </p>
+<p class="korisnici"> 
+<span class="unutra">Trenutno imate <?php echo $br_punomoci; if ($br_punomoci % 10 === 1 && $br_punomoci!== 11) echo " punomoć"; else echo " punomoći"; ?> za odobriti ili odbiti.
+</span>
+</p>
+
 </div>
 
 <?php

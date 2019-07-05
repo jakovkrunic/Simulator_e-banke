@@ -18,10 +18,13 @@
     <?php 
         $brojac = 0;
         foreach ($racuni as $key) {
+            if($key->tip_racuna !== "devizni")
+            {
             if($brojac==0)
                 echo "<option selected value=".$key->tip_racuna.">".$key->tip_racuna."</option>";
             else echo "<option value=".$key->tip_racuna.">".$key->tip_racuna."</option>";
             $brojac++;
+            }
         }
     ?>
     </select><br>

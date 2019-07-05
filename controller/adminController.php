@@ -8,11 +8,14 @@ class AdminController extends BaseController
         $korisnici = $as-> getUnapprovedUsers();
         $racuni = $as -> getAllUnapprovedAccounts();
         $transakcije = $as -> getAllUnapprovedTransactions();
+        $punomoci = $as -> getUnapprovedPunomoc();
+        $br_punomoci = count($punomoci);
         $br_korisnika = count($korisnici);
         $br_racuna = count($racuni);
         $br_transakcija = count($transakcije);
         $this->registry->template->br_korisnika = $br_korisnika;
         $this->registry->template->br_racuna = $br_racuna;
+        $this->registry->template->br_punomoci = $br_punomoci;
         $this->registry->template->br_transakcija = $br_transakcija;
 		$this->registry->template->show( 'admin_index' );
     }
@@ -323,6 +326,44 @@ class AdminController extends BaseController
 		$this->registry->template->transakcije = $as->getAllUnapprovedTransactions();		
 		$this->registry->template->naslov = "Odobravanje transakcija";
 		$this->registry->template->show( 'admin_transakcije' );
+    }
+
+    public function unapprovedOpunomocenje()
+    {
+        $as = new AdminService();
+        $this->registry->template->zahtjevi = $as->getUnapprovedPunomoc();
+        $this->registry->template->naslov = "Odobrenje punomoći";
+        $this->registry->template->show( 'admin_punomoc' ); 
+    }
+
+    public function approvePunomoc()
+    {
+        $as = new AdminService();
+
+		$id = $_GET['id'];
+
+        $poruka = $as->acceptPunomoc($id);
+        
+        $this->registry->template->poruka = $poruka;
+
+		$this->registry->template->zahtjevi = $as->getUnapprovedPunomoc();
+        $this->registry->template->naslov = "Odobrenje punomoći";
+        $this->registry->template->show( 'admin_punomoc' ); 
+    }
+
+    public function rejectPunomoc()
+    {
+        $as = new AdminService();
+
+		$id = $_GET['id'];
+
+        $poruka = $as->rejectpunomoc($id);
+        
+        $this->registry->template->poruka = $poruka;
+
+		$this->registry->template->zahtjevi = $as->getUnapprovedPunomoc();
+        $this->registry->template->naslov = "Odobrenje punomoći";
+        $this->registry->template->show( 'admin_punomoc' ); 
     }
 
 

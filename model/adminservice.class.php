@@ -275,6 +275,106 @@ class AdminService
 		return $arr;
 	}
 
+	function getUnapprovedPunomoc()
+	{
+		$db = DB::getConnection();
+		try
+		{
+			$st = $db->prepare( 'SELECT * FROM projekt_punomoc WHERE odobren=0' );
+			$st->execute();
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+
+		$arr = array();
+		while( $row = $st->fetch() )
+		{
+			try
+			{
+			$q = $db->prepare( 'SELECT ime, prezime FROM projekt_korisnik WHERE oib=:oib' );
+			$q->execute(array( 'oib' => $row['oib_opunomocenika']));
+			}
+			catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+			$opunomocenik = $q->fetch();
+
+			try
+			{
+			$qq = $db->prepare( 'SELECT oib FROM projekt_racun WHERE id=:id' );
+			$qq->execute(array( 'id' => $row['id_racuna']));
+			}
+			catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+			$oib_vlasnika_racuna = $qq->fetch();
+
+			try
+			{
+			$qqq = $db->prepare( 'SELECT ime, prezime FROM projekt_korisnik WHERE oib=:oib' );
+			$qqq->execute(array( 'oib' => $oib_vlasnika_racuna['oib']));
+			}
+			catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+			$vlasnik_racuna = $qqq->fetch();
+
+			//, $oib_opunomocenika, $ime_opunomocenika, $prezime_opunomocenika, $odobren
+			$arr[] = new Punomoc($row['id'], $row['id_racuna'], $oib_vlasnika_racuna['oib'], $vlasnik_racuna['ime'],
+					$vlasnik_racuna['prezime'], $row['oib_opunomocenika'], $opunomocenik['ime'], $opunomocenik['prezime'], 0);
+			
+		}
+
+		return $arr;
+	}
+
+	function acceptPunomoc($id){
+
+        try
+			{
+				$db = DB::getConnection();
+				$st = $db->prepare( 'UPDATE projekt_punomoc SET odobren=1 WHERE id=:id' );
+				$st->execute( array( 'id' => $id ) );
+			}
+		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
+	}
+	
+	function rejectpunomoc($id)
+	{
+		$db = DB::getConnection();
+		try
+		{
+			$st = $db->prepare( 'SELECT oib_opunomocenika FROM projekt_punomoc WHERE id=:id' );
+			$st->execute( array( 'id' => $id) );
+		}
+		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
+		$oib_opunomocenika = $st->fetch();
+
+		try
+		{
+			$st = $db->prepare( 'DELETE FROM projekt_punomoc WHERE id=:id' );
+			$st->execute( array( 'id' => $id) );
+		}
+		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
+
+		try
+		{
+			$st = $db->prepare( 'SELECT oib, ime, email, prezime FROM projekt_korisnik WHERE oib=:oib' );
+			$st->execute( array( 'oib' => $oib_opunomocenika['oib_opunomocenika']) );
+		}
+        catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
+		// $row = $st->fetch();
+		// $to       = $row['email'];
+		// $subject  = 'Povratni mail';
+		// $message  = 'Poštovani ' . $row['ime'] . ', ' . $row['prezime'] . ' (OIB: ' . $row['oib'] . ')' . "!\n";
+		// 	$message .= 'Administrator Vam nije dozvolio da postanete opunomoćenik za traženi račun.' . "\n";
+			
+		// $headers  = 'From: rp2@studenti.math.hr' . "\r\n" .
+		// 'Reply-To: rp2@studenti.math.hr' . "\r\n" .
+		// 'X-Mailer: PHP/' . phpversion();
+
+		// $isOK = mail($to, $subject, $message, $headers);
+
+		// if( !$isOK )
+		// 	return 'Mail se ne može poslati.';
+
+		// //Zahvali mu na prijavi.
+		// return 'ok';
+	}
+
 	function rejectTransakciju($id)
 	{
 		// 1. uzmi sve podatke o toj transakciji
