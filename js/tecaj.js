@@ -19,7 +19,7 @@ function(data, status) {
       td1.style.border = "1px solid black";
 
       var td2 = document.createElement("td");
-      td2.innerHTML = 1 / parseFloat(data.rates[key]);
+      td2.innerHTML = (1 / parseFloat(data.rates[key])).toFixed(10);
       td2.style.border = "1px solid black";
 
       tr.appendChild(th);
