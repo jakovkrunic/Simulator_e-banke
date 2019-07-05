@@ -91,38 +91,20 @@ class AdminController extends BaseController
             $oib = $_POST['oib'];
             $prezime = $_POST['prezime'];
 
+            $_SESSION['oib_korisnika'] = $oib;
+            $_SESSION['ime_korisnika'] = $ime;
+            $_SESSION['prezime_korisnika'] = $prezime;
+
             $as = new AdminService();
             $poruka = $as -> checkUser($ime, $prezime, $oib);
             
             if($poruka === 'OK')
             {
-                if(!isset($_POST['iznos']) || !is_numeric($_POST['iznos']) || !isset($_POST['kamatna_stopa']) || !is_numeric($_POST['kamatna_stopa']))
-                {
-                    $this->registry->template->oib_korisnika = $_POST['oib'];	
-                    $this->registry->template->ime_korisnika = $_POST['ime'];	
-                    $this->registry->template->prezime_korisnika = $_POST['prezime'];
-
-                    $this->registry->template->poruka = "Niste unijeli potrebne podatke ili ste ih unijeli neispravno.";		
-                    $this->registry->template->naslov = "Otvaranje štednje";
-                    $this->registry->template->show( 'admin_openSavingUser' ); 
-                }
-                else
-                {
-                    echo $_POST['ime'];   
-                    $ime = $_POST['ime'];
-                    $oib = $_POST['oib'];
-                    $prezime = $_POST['prezime'];
-                    $iznos = floatval($_POST['iznos']);
-                    $kamatna_stopa = floatval($_POST['kamatna_stopa']);
-                    $valuta = $_POST['valuta'];
-
-                    $as = new AdminService();
-                    $poruka = $as -> addSaving($oib, $iznos, $kamatna_stopa, $valuta);
-
-                    $this->registry->template->poruka = $poruka;		
-                    $this->registry->template->naslov = "Otvaranje štednje";
-                    $this->registry->template->show( 'admin_openSavingUser' ); 
-                }   
+                $this->registry->template->oib_korisnika = $oib;	
+                $this->registry->template->ime_korisnika = $ime;	
+                $this->registry->template->prezime_korisnika = $prezime;		
+                $this->registry->template->naslov = "Otvaranje štednje";
+                $this->registry->template->show( 'admin_openSavingForm' );
             }
             else 
             {
@@ -140,20 +122,19 @@ class AdminController extends BaseController
     {
         if(!isset($_POST['iznos']) || !is_numeric($_POST['iznos']) || !isset($_POST['kamatna_stopa']) || !is_numeric($_POST['kamatna_stopa']))
         {
-            $this->registry->template->oib_korisnika = $_POST['oib'];	
-            $this->registry->template->ime_korisnika = $_POST['ime'];	
-            $this->registry->template->prezime_korisnika = $_POST['prezime'];
+            $this->registry->template->oib_korisnika = $_SESSION['oib_korisnika'];	
+            $this->registry->template->ime_korisnika = $_SESSION['ime_korisnika'];	
+            $this->registry->template->prezime_korisnika = $_SESSION['prezime_korisnika'];
 
             $this->registry->template->poruka = "Niste unijeli potrebne podatke ili ste ih unijeli neispravno.";		
             $this->registry->template->naslov = "Otvaranje štednje";
             $this->registry->template->show( 'admin_openSavingForm' ); 
         }
         else
-        {
-            echo $_POST['ime'];   
-            $ime = $_POST['ime'];
-            $oib = $_POST['oib'];
-            $prezime = $_POST['prezime'];
+        { 
+            $ime = $_SESSION['ime_korisnika'];
+            $oib = $_SESSION['oib_korisnika'];
+            $prezime = $_SESSION['prezime_korisnika'];
             $iznos = floatval($_POST['iznos']);
             $kamatna_stopa = floatval($_POST['kamatna_stopa']);
             $valuta = $_POST['valuta'];
@@ -161,11 +142,22 @@ class AdminController extends BaseController
             $as = new AdminService();
             $poruka = $as -> addSaving($oib, $iznos, $kamatna_stopa, $valuta);
 
+            unset($_SESSION['oib_korisnika']);
+            unset($_SESSION['ime_korisnika']);
+            unset($_SESSION['prezime_korisnika']);
+
             $this->registry->template->poruka = $poruka;		
             $this->registry->template->naslov = "Otvaranje štednje";
             $this->registry->template->show( 'admin_openSavingUser' ); 
         }
     }
+
+    public function openCreditForm()
+    {
+        $this->registry->template->show( 'admin_openCreditUser' );
+    }
+
+
 };
 
 ?>

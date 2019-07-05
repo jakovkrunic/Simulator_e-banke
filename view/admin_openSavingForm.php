@@ -8,7 +8,7 @@
 <br>
 <script src='./js/kreiranje_racuna.js'></script>
 <form method="post" action="<?php echo __SITE_URL . '/index.php?rt=admin/openSavingOpen'?>">
-    <label>Upišite tražene podatke </label> <br><br>
+    <label>Upišite tražene podatke. </label> <br><br>
 
     <label>OIB: </label> <input type="text" name="oib"  id="oib" value="<?php echo $oib_korisnika; ?>" disabled />
     <label>Ime: </label> <input type="text" name="ime" id="ime" value="<?php echo $ime_korisnika; ?>" disabled/>
