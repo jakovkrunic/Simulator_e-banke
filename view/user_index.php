@@ -14,6 +14,11 @@
 
 </tr>
 </table>
+<br>
+<h1>Kontakt informacije</h1>
+Za sve informacije ili nedoumice, navratite u jednu od naših poslovnica ili nas kontaktirajte putem telefona ili e-maila.<br>
+Broj telefona: +385 (0)1 4605 777<br>
+E-mail: morz(at)math.hr
 <script src="<?php echo __SITE_URL;?>/js/tecaj.js"></script>
 <?php
 require_once 'view/_footer.php'; ?>
