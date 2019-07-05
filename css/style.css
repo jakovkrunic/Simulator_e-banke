@@ -88,3 +88,11 @@ tr:not(:first-child):hover {background-color: #e6f0ff;}
   height: 300px;
   width: 50%;
 }
+
+.footer {
+  position:absolute;
+  left:0;
+  right:0;
+  background-color: #00AAAA;
+  border: 1px solid black;
+}
