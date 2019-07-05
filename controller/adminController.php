@@ -4,6 +4,16 @@ class AdminController extends BaseController
 {
     public function index()
     {
+        $as = new AdminService();
+        $korisnici = $as-> getUnapprovedUsers();
+        $racuni = $as -> getAllUnapprovedAccounts();
+        $transakcije = $as -> getAllUnapprovedTransactions();
+        $br_korisnika = count($korisnici);
+        $br_racuna = count($racuni);
+        $br_transakcija = count($transakcije);
+        $this->registry->template->br_korisnika = $br_korisnika;
+        $this->registry->template->br_racuna = $br_racuna;
+        $this->registry->template->br_transakcija = $br_transakcija;
 		$this->registry->template->show( 'admin_index' );
     }
 
