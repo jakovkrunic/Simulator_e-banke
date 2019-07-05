@@ -129,8 +129,15 @@ class PredlozakController extends BaseController
 		}
 		else
 		{
+			$moj_racun = $as->getAccountById($_POST['moj']);
       $racuni = $as->getAllUserAccounts($_SESSION['oib']);
-			$op_racuni = $as->getAllAssigneeAccountsFromOIB($_SESSION['oib']);
+			if($_POST['valuta'] != $moj_racun->valuta_racuna)
+			{
+				$this->registry->template->naslov = $title;
+				$this->registry->template->message = 'Unijeli ste valutu koja nije jednaka valuti Vašeg računa.';
+				$this->registry->template->show( $str );
+				exit();
+			}
 			$test = false;
 			foreach( $racuni as $racun )
 			{
@@ -140,18 +147,10 @@ class PredlozakController extends BaseController
 					break;
 				}
 			}
-			for($i=0;$i<count($op_racuni);$i++)
-			{
-				if($_POST['moj'] == $op_racuni[$i])
-				{
-					$test = true;
-					break;
-				}
-			}
 			if(!$test)
 			{
 				$this->registry->template->naslov = $title;
-				$this->registry->template->message = 'U rubrici Broj mog računa ste unijeli račun koji nije Vaš ili račun nad kojim nemate punomoć!';
+				$this->registry->template->message = 'U rubrici Broj mog računa ste unijeli račun koji nije Vaš!';
 				$this->registry->template->show( $str );
 				exit();
 			}
@@ -192,12 +191,28 @@ class PredlozakController extends BaseController
 	public function transakcija()
 	{
 		$ps = new PredlozakService();
-		$ts = new TransactionService();
+		$Trans= new TransactionService();
 		$predlozak = $ps->getTemplateById( $_GET['id_predlozak'] );
-		$ts->insertNewTransaction($predlozak->ime, $predlozak->racun_posiljatelj, $predlozak->racun_primatelj, $predlozak->valuta, $_POST['iznos'] );
-		$this->registry->template->naslov = 'Uspješno ste poslali zahtjev za transakcijom!';
-		$this->registry->template->message = '';
-		$this->registry->template->show( 'predlozak_kraj' );
+		$iznos=$_POST["iznos"];
+
+		$ac=new AccountService();
+		$racun=$ac->getAccountById($predlozak->racun_posiljatelj);
+		if(($racun->stanje_racuna-$racun->dozvoljeni_minus)>$iznos){
+
+			$ac->updateAmount($predlozak->racun_posiljatelj,$iznos);
+			$Trans->insertNewTransaction($predlozak->ime,$predlozak->racun_posiljatelj,$predlozak->racun_primatelj,$predlozak->valuta,$iznos);
+			$transactions=$Trans->getAllTransactions($_SESSION['oib']);
+			$this->registry->template->naslov= "Uspjesno ste poslali zahtjev za transakcijom! Transakcija će biti odobrena ili odbijena za 3-5 dana.";
+			$this->registry->template->message = '';
+			$this->registry->template->show( 'predlozak_kraj' );
+		}
+		else{
+			$transactions=$Trans->getAllTransactions($_SESSION['oib']);
+			$this->registry->template->naslov= "Nemate toliko novaca na računu!";
+			$this->registry->template->message = '';
+			$this->registry->template->show( 'predlozak_kraj' );
+
+		}
 	}
 
 	public function izmijeni()
