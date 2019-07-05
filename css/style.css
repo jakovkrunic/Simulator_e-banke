@@ -1,5 +1,5 @@
 
-ul 
+ul
 {
     list-style-type: none;
     margin: 0;
@@ -8,14 +8,14 @@ ul
     border: 1px solid #e7e7e7;
     background-color: #f3f3f3;
 }
-  
-li 
+
+li
 {
     float: left;
     width: 16%;
 }
-  
-li a 
+
+li a
 {
     display: block;
     color: #666;
@@ -23,22 +23,22 @@ li a
     padding: 14px 16px;
     text-decoration: none;
 }
-  
-li a:hover:not(.active) 
+
+li a:hover:not(.active)
 {
     background-color: #ccd8ff;
 }
-  
+
 h1 { color: #00134d; font-family: 'Open Sans', sans-serif; font-size: 34px; font-weight: 300; line-height: 40px; margin: 0 0 16px; }
 
 h2 { color: #00134d;  text-align: center; font-family: 'Open Sans', sans-serif; font-size: 24px; font-weight: 300; line-height: 32px; margin: 0 0 14px; }
 
-div.user { 
-    color: #00134d; 
-    text-align: center; 
-    font-family: 'Droid serif', serif; 
-    font-size: 20px; font-weight: 400; 
-    font-style: italic; line-height: 44px; 
+div.user {
+    color: #00134d;
+    text-align: center;
+    font-family: 'Droid serif', serif;
+    font-size: 20px; font-weight: 400;
+    font-style: italic; line-height: 44px;
     margin: 0 0 12px;
     background-color: #e6ecff;
     padding-top: 10px;
@@ -49,7 +49,7 @@ div.user {
 div.sredina { text-align: center; font-family: 'Droid serif', serif; font-size: 20px; font-weight: 400; font-style: italic; line-height: 44px; margin: 0 0 12px; }
 
 button.button {
-    background-color: #99b3ff; 
+    background-color: #99b3ff;
     border: none;
     border-radius: 5px;
     color: #001a66;
@@ -60,7 +60,7 @@ button.button {
     font-size: 13px;
     margin: 4px 2px;
     cursor: pointer;
-    -webkit-transition-duration: 0.4s; 
+    -webkit-transition-duration: 0.4s;
     transition-duration: 0.4s;
 }
 
@@ -69,13 +69,13 @@ button.button:hover {
 }
 
 
-table 
+table
 {
     border-collapse: collapse;
     width: 50%;
 }
-  
-th, td 
+
+th, td
 {
     padding: 8px;
     text-align: left;
@@ -84,3 +84,7 @@ th, td
 
 tr:not(:first-child):hover {background-color: #e6f0ff;}
 
+.map {
+  height: 300px;
+  width: 50%;
+}
