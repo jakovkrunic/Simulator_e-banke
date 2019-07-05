@@ -85,6 +85,40 @@ class AdminService
 
 		//Zahvali mu na prijavi.
 		return 'ok';
-    }
+	}
+	
+	function checkUser($ime, $prezime, $oib)
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT oib, ime, email, prezime FROM projekt_korisnik WHERE oib=:oib AND ime=:ime AND prezime=:prezime' );
+
+			$st->execute( array( 'oib' => $oib, 'ime' => $ime, 'prezime' => $prezime) );
+		}
+        catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
+        $row = $st->fetch();
+        if($row === false)
+			return 'Nema korisnika s tim oib-om';
+		else return 'OK';
+	}
+
+	function addSaving($oib, $iznos, $kamatna_stopa, $valuta)
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'INSERT INTO projekt_stednja(oib, iznos_stednje, kamatna_stopa, valuta) VALUES ' .
+				                '(:oib, :iznos, :kam, :val)' );
+
+			$st->execute( array( 'oib' => $oib,
+								 'iznos' => $iznos,	
+								 'kam' => $kamatna_stopa,
+								 'val' => $valuta		                 
+				                  ) );
+		}
+		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
+		return "Uspješno ste otvorili štednju.";
+	}
 }
 ?>

@@ -14,10 +14,12 @@ echo '<table align="center"><th>OIB</th><th>Vrsta računa</th><th>Željeno preko
 		<form method="post" action="<?php echo __SITE_URL . '/index.php?rt=admin/approveAcc&id='.$racun->id?>">
 			<button class="button" type="submit">Accept!</button>
 		</form>	
-		</td>
+		</td></tr>
                 <?php
 			}
 			
 		?>
+		</table>
 <?php
+
 require_once 'view/_footer.php'; ?>

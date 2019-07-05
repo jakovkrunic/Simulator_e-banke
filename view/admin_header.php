@@ -15,8 +15,8 @@
 			<li><a href="index.php?rt=admin">Naslovnica</a></li>
             <li><a href="index.php?rt=admin/unapprovedUsers">Odobri zahtjeve za nove korisnike</a></li>
 			<li><a href="index.php?rt=admin/unapprovedAcc">Odobri račune</a></li>
-			<li><a href="index.php?rt=predlozak">Odobri štednje - nema još</a></li>
-			<li><a href="index.php?rt=saving">Odobri kredite - nema još</a></li>
+			<li><a href="index.php?rt=admin/openSavingForm">Otvori novu štednju korisniku</a></li>
+			<li><a href="index.php?rt=saving">Otvori novi kredit korisniku</a></li>
 			<li><a href="index.php?rt=credit">Ako će trebati još nešto - nema još</a></li>
 		</ul>
 	</nav>

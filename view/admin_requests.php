@@ -1,6 +1,6 @@
 <?php require_once 'view/admin_header.php';
 ?>	
-	<h1><?php echo $title; ?></h1>
+	<h2><?php echo $title; ?></h2>
 <?php
 echo '<table align="center"><th>OIB</th><th>Ime</th><th>Prezime</th><th>Email</th><th></th>';
 	foreach($zahtjevi as $user){
@@ -12,11 +12,11 @@ echo '<table align="center"><th>OIB</th><th>Ime</th><th>Prezime</th><th>Email</t
 		<form method="post" action="<?php echo __SITE_URL . '/index.php?rt=admin/approve&oib=' . $user['oib']. '&registriran='. $user['registriran']?>">
 			<button class="button" type="submit">Accept!</button>
 		</form>	
-		</td>
+		</td></tr>
                 <?php
 			}
 			
-		?>
+		?></table>
 
-<?php if(isset($poruka)) echo '<br>' . $poruka . '<br>'; ?>
-</body>
+<?php if(isset($poruka)) echo '<br>' . $poruka . '<br>';
+require_once 'view/_footer.php';  ?>
