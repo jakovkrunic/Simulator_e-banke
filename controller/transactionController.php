@@ -7,7 +7,11 @@ class TransactionController extends BaseController
 		$Trans= new TransactionService();
 		$transactions=$Trans->getAllTransactions($_SESSION['oib']);
 		$this->registry->template->transactions = $transactions;
+		$incomingtransactions=$Trans->getAllIncomingTransactions($_SESSION['oib']);
+		$this->registry->template->incomingtransactions = $incomingtransactions;
 		$this->registry->template->show( 'transaction_index' );
+
+
 	}
 
 	public function new()
@@ -36,12 +40,17 @@ class TransactionController extends BaseController
 			$transactions=$Trans->getAllTransactions($_SESSION['oib']);
 			$this->registry->template->poruka= "Uspjesno ste poslali zahtjev za transakcijom! Transakcija će biti odobrena ili odbijena za 3-5 dana.";
 			$this->registry->template->transactions = $transactions;
+			$incomingtransactions=$Trans->getAllIncomingTransactions($_SESSION['oib']);
+			$this->registry->template->incomingtransactions = $incomingtransactions;
 			$this->registry->template->show( 'transaction_index' );
+
 		}
 		else{
 			$transactions=$Trans->getAllTransactions($_SESSION['oib']);
 			$this->registry->template->poruka= "Nemate toliko novaca na računu!";
 			$this->registry->template->transactions = $transactions;
+			$incomingtransactions=$Trans->getAllIncomingTransactions($_SESSION['oib']);
+			$this->registry->template->incomingtransactions = $incomingtransactions;
 			$this->registry->template->show( 'transaction_index' );
 
 		}
@@ -70,6 +79,8 @@ class TransactionController extends BaseController
 
 		$transactions=$Trans->getAllTransactions($_SESSION['oib']);
 		$this->registry->template->transactions = $transactions;
+		$incomingtransactions=$Trans->getAllIncomingTransactions($_SESSION['oib']);
+		$this->registry->template->incomingtransactions = $incomingtransactions;
 		$this->registry->template->show( 'transaction_index' );
 	}
 };
