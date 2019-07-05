@@ -50,14 +50,24 @@ class AdminController extends BaseController
         
     }
 
-    public function unapprovedAcc(){
+    public function unapprovedAcc()
+    {
 
 		$as = new AdminService();
 
 		$this->registry->template->racuni = $as->getAllUnapprovedAccounts();		
 		$this->registry->template->naslov = "Odobravanje računa";
 		$this->registry->template->show( 'odobrenje_racuna' );
-	}
+    }
+    
+    public function transactions()
+    {
+        $as = new AdminService();
+
+		$this->registry->template->transakcije = $as->getAllUnapprovedTransactions();		
+		$this->registry->template->naslov = "Odobravanje transakcija";
+		$this->registry->template->show( 'admin_transakcije' );
+    }
 
 	public function approveAcc()
 	{

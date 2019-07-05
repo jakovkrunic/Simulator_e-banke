@@ -14,10 +14,10 @@
 		<ul>
 			<li><a href="index.php?rt=admin">Naslovnica</a></li>
             <li><a href="index.php?rt=admin/unapprovedUsers">Odobri zahtjeve za nove korisnike</a></li>
-			<li><a href="index.php?rt=admin/unapprovedAcc">Odobri račune</a></li>
+			<li><a href="index.php?rt=admin/unapprovedAcc">Odobri zahtjeve za nove račune</a></li>
+			<li><a href="index.php?rt=admin/transactions">Odobri transakcije</a></li>
 			<li><a href="index.php?rt=admin/openSavingForm">Otvori novu štednju korisniku</a></li>
 			<li><a href="index.php?rt=admin/openCreditForm">Otvori novi kredit korisniku</a></li>
-			<li><a href="index.php?rt=admin">Ako će trebati još nešto - nema još</a></li>
 		</ul>
 	</nav>
 	

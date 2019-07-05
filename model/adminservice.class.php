@@ -35,6 +35,27 @@ class AdminService
 		return $arr;
 	}
 
+	function getAllUnapprovedTransactions()
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT * FROM projekt_transakcija WHERE odobrena=0' );
+			$st->execute();
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+
+		$arr = array();
+		while( $row = $st->fetch() )
+		{
+			$arr[] = new Transaction($row['id'], $row['opis'], $row['racun_posiljatelj'] ,
+					$row['racun_primatelj'], $row['valuta'], $row['iznos'], $row['odobrena'], $row['datum']);
+			
+		}
+
+		return $arr;
+	}
+
 	function approveAccount($id){
 
         try
