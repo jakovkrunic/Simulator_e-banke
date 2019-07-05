@@ -88,6 +88,16 @@ class AccountService
 
 	}
 
+	function updateAmount($id_racuna,$iznos){
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'UPDATE projekt_racun SET  stanje_racuna=stanje_racuna-:iznos WHERE id=:id_racuna' );
+			$st->execute( array( 'id_racuna' => $id_racuna, ':iznos' => $iznos ) );
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+	}
+
 };
 
 ?>

@@ -23,7 +23,8 @@ class TransactionService
 		try
     {
       $db = DB::getConnection();
-      $st = $db->prepare( 'SELECT * FROM projekt_transakcija JOIN  projekt_racun
+      $st = $db->prepare( 'SELECT projekt_transakcija.id, opis, racun_posiljatelj, racun_primatelj, valuta, iznos, odobrena, datum
+				 				FROM projekt_transakcija JOIN  projekt_racun
 								ON projekt_transakcija.racun_posiljatelj=projekt_racun.id WHERE oib=:oib' );
       $st->execute( array( 'oib' => $user_oib) );
     }
@@ -40,6 +41,15 @@ class TransactionService
     return $arr;
 	}
 
+	function removependingTransaction($id_trans){
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'DELETE FROM projekt_transakcija WHERE id=:id' );
+			$st->execute( array( 'id' => $id_trans) );
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+	}
 
 };
 
