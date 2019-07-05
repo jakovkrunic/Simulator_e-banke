@@ -90,9 +90,28 @@ tr:not(:first-child):hover {background-color: #e6f0ff;}
 }
 
 .footer {
-  position:absolute;
-  left:0;
+  position:fixed;
   right:0;
-  background-color: #00AAAA;
+  width: 10%;
+  height: 5%;
+  background-color: #b3ffff;
   border: 1px solid black;
+  margin-top: auto;
+  text-align: center;
+  font-size: 100%;
+  bottom: 0;
+  text-decoration: none;
+  margin-top: 5px;
+  padding-top: 6px;
+  border-radius: 5px;
 }
+
+.footer a:link {color:#006666; text-decoration: none;}      /* unvisited link */
+.footer a:visited {color:#006666; text-decoration: none;}  /* visited link */
+.footer a:hover {color:#006666; text-decoration: none;}  /* mouse over link */
+.footer a:active {color:#006666; text-decoration: none;}  /* selected link */ 
+
+a:link {color:#004d4d; text-decoration: none;  font-weight: bold;}      /* unvisited link */
+a:visited {color:#004d4d; text-decoration: none;  font-weight: bold;}  /* visited link */
+a:hover {color:#004d4d; text-decoration: none; font-weight: bold;}  /* mouse over link */
+a:active {color:#004d4d; text-decoration: none; font-weight: bold;}  /* selected link */ 
