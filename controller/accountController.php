@@ -7,6 +7,14 @@ class AccountController extends BaseController
 		$as = new AccountService();
 		$us = new UserService();
 		$racuni = $as->getAllUserAccounts($_SESSION['oib']);
+		$punomocni_ids = $as->getAllAssigneeAccountsFromOIB($_SESSION['oib']);
+		$punomocni = array();
+		$vlasnici = array();
+		for($i=0;$i<count($punomocni_ids);$i++)
+		{
+			$punomocni[] = $as->getAccountById($punomocni_ids[$i]);
+			$vlasnici[] = $us->getUserByOIB(($as->getAccountById($punomocni_ids[$i]))->oib);
+		}
 		$op_racuni = array();
 		$korisnici = array();
 		foreach ($racuni as $racun)
@@ -24,6 +32,8 @@ class AccountController extends BaseController
 		}
 		$this->registry->template->racuni = $racuni;
 		$this->registry->template->op_racuni = $op_racuni;
+		$this->registry->template->punomocni = $punomocni;
+		$this->registry->template->vlasnici = $vlasnici;
 		$this->registry->template->korisnici = $korisnici;
 		$this->registry->template->show( 'account_index' );
 	}
