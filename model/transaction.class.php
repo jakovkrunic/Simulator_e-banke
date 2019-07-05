@@ -2,8 +2,8 @@
 
 class Transaction
 {
-	protected $id, $opis, $racun_posiljatelj, $racun_primatelj, $valuta, $iznos, $datum;
-	function __construct($id, $opis, $racun_posiljatelj, $racun_primatelj, $valuta, $iznos, $datum)
+	protected $id, $opis, $racun_posiljatelj, $racun_primatelj, $valuta, $iznos, $odobrena, $datum;
+	function __construct($id, $opis, $racun_posiljatelj, $racun_primatelj, $valuta, $iznos, $odobrena, $datum)
 	{
 		$this->opis = $opis;
 		$this->id = $id;
@@ -11,6 +11,7 @@ class Transaction
 		$this->racun_primatelj = $racun_primatelj;
 		$this->valuta = $valuta;
 		$this->iznos = $iznos;
+		$this->odobrena = $odobrena;
 		$this->datum = $datum;
 	}
 
