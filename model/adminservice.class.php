@@ -14,7 +14,7 @@ class AdminService
 
         return $zahtjevi;
 	}
-	
+
 	function rejectUser($oib)
 	{
 		$db = DB::getConnection();
@@ -34,12 +34,12 @@ class AdminService
 		}
 		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
 
-		
+
 		$to       = $row['email'];
 		$subject  = 'Povratni mail';
 		$message  = 'Poštovani ' . $row['ime'] . ', ' . $row['prezime'] . ' (OIB: ' . $row['oib'] . ')' . "!\n";
 			$message .= 'Administrator Vam nije prihvatio zahtjev za izradu korisničkog računa.' . "\n";
-			
+
 		$headers  = 'From: rp2@studenti.math.hr' . "\r\n" .
 		'Reply-To: rp2@studenti.math.hr' . "\r\n" .
 		'X-Mailer: PHP/' . phpversion();
@@ -84,7 +84,7 @@ class AdminService
 			}
 		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
 	}
-	
+
 	function rejectAccount($id)
 	{
 		$db = DB::getConnection();
@@ -114,7 +114,7 @@ class AdminService
 		$subject  = 'Povratni mail';
 		$message  = 'Poštovani ' . $row['ime'] . ', ' . $row['prezime'] . ' (OIB: ' . $row['oib'] . ')' . "!\n";
 			$message .= 'Administrator Vam nije prihvatio zahtjev za izradu računa.' . "\n";
-			
+
 		$headers  = 'From: rp2@studenti.math.hr' . "\r\n" .
 		'Reply-To: rp2@studenti.math.hr' . "\r\n" .
 		'X-Mailer: PHP/' . phpversion();
@@ -169,7 +169,7 @@ class AdminService
 		return 'ok';
 	}
 
-	
+
 	function checkUser($ime, $prezime, $oib)
 	{
 		try
@@ -195,9 +195,9 @@ class AdminService
 				                '(:oib, :iznos, :kam, :val)' );
 
 			$st->execute( array( 'oib' => $oib,
-								 'iznos' => $iznos,	
+								 'iznos' => $iznos,
 								 'kam' => $kamatna_stopa,
-								 'val' => $valuta		                 
+								 'val' => $valuta
 				                  ) );
 		}
 		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
@@ -234,7 +234,7 @@ class AdminService
 		}
 		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
 		$racun_id = $st->fetch();
-		
+
 		try
 		{
 			$db = DB::getConnection();
@@ -243,15 +243,15 @@ class AdminService
 
 			$st->execute( array( 'oib' => $oib,
 								 'id' => $racun_id['id'],
-								 'iznos' => $iznos,	
+								 'iznos' => $iznos,
 								 'kam' => $kamatna_stopa,
 								 'rata' =>$rata,
-								 'val' => $valuta		                 
+								 'val' => $valuta
 				                  ) );
 		}
 		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
 		return "Uspješno ste otvorili kredit.";
-		
+
 	}
 
 	function getAllUnapprovedTransactions()
@@ -269,7 +269,7 @@ class AdminService
 		{
 			$arr[] = new Transaction($row['id'], $row['opis'], $row['racun_posiljatelj'] ,
 					$row['racun_primatelj'], $row['valuta'], $row['iznos'], $row['odobrena'], $row['datum']);
-			
+
 		}
 
 		return $arr;
@@ -315,7 +315,7 @@ class AdminService
 			//, $oib_opunomocenika, $ime_opunomocenika, $prezime_opunomocenika, $odobren
 			$arr[] = new Punomoc($row['id'], $row['id_racuna'], $oib_vlasnika_racuna['oib'], $vlasnik_racuna['ime'],
 					$vlasnik_racuna['prezime'], $row['oib_opunomocenika'], $opunomocenik['ime'], $opunomocenik['prezime'], 0);
-			
+
 		}
 
 		return $arr;
@@ -331,7 +331,7 @@ class AdminService
 			}
 		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
 	}
-	
+
 	function rejectpunomoc($id)
 	{
 		$db = DB::getConnection();
@@ -361,7 +361,7 @@ class AdminService
 		// $subject  = 'Povratni mail';
 		// $message  = 'Poštovani ' . $row['ime'] . ', ' . $row['prezime'] . ' (OIB: ' . $row['oib'] . ')' . "!\n";
 		// 	$message .= 'Administrator Vam nije dozvolio da postanete opunomoćenik za traženi račun.' . "\n";
-			
+
 		// $headers  = 'From: rp2@studenti.math.hr' . "\r\n" .
 		// 'Reply-To: rp2@studenti.math.hr' . "\r\n" .
 		// 'X-Mailer: PHP/' . phpversion();
@@ -418,6 +418,65 @@ class AdminService
 		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
 
 		return "OK";
+	}
+
+	function acceptTransaction($id) {
+		// Nadji transakciju
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT * FROM projekt_transakcija WHERE id=:id' );
+			$st->execute( array( 'id' => $id ) );
+		}
+		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
+
+		$transakcija = $st->fetch();
+
+		// Nadji racun primatelja i valutu
+
+		try {
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT * FROM projekt_racun WHERE id=:id' );
+			$st->execute( array( 'id' => $transakcija["racun_primatelj"] ) );
+		}
+		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
+
+		$racun_primatelj = $st->fetch();
+
+		// Nadji tecaj preko skripte
+
+		$valuta1 = $transakcija['valuta'];
+		$valuta2 = $racun_primatelj['valuta_racuna'];
+
+		echo '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>';
+		echo '<script src="' . __SITE_URL .'/js/approve_tecaj.js"></script>';
+		echo '<script> getTecaj("'. $valuta1 . '", "' . $valuta2. '") </script>';
+
+		$tecaj = $_COOKIE["tecaj"];
+
+		// Nadji iznos
+
+		$iznos = round(floatval($transakcija['iznos']) * floatval($tecaj), 2);
+		// Update baze
+
+		// Na transakciju stavi odobrena = 1
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'UPDATE projekt_transakcija SET odobrena=1 WHERE id=:id' );
+			$st->execute( array( 'id' => $id ) );
+		}
+		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
+
+		// Pronadi racun primatelja i dodaj mu iznos
+		$novo_stanje = $iznos + $racun_primatelj['stanje_racuna'];
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'UPDATE projekt_racun SET stanje_racuna=:stanje WHERE id=:id' );
+			$st->execute( array( 'stanje' => $novo_stanje, 'id' => $transakcija['racun_primatelj']  ) );
+		}
+		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
 	}
 }
 ?>
