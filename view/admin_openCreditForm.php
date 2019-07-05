@@ -4,6 +4,7 @@
 
 <br>
 <script src='./js/kreiranje_racuna.js'></script>
+<script src='./js/za_kredit.js'></script>
 
 <form method="post" action="<?php echo __SITE_URL . '/index.php?rt=admin/openCreditOpen'?>">
     <label>Upišite tražene podatke. </label> <br><br>
@@ -28,10 +29,12 @@
     <select name='valuta' id='valutaRacuna'>
     </select><br>
 
-    <label>Iznos kredita: </label> <input type="text" name="iznos"/> <br>
-    <label>Rata kredita: </label> <input type="text" name="rata"/> <br>
-    <label>Kamatna stopa: </label> <input type="text" name="kamatna_stopa"/> <br>
-    
+    <label>Iznos kredita: </label> <input type="text" name="iznos" id="iznos"/> <br>    
+    <label>Kamatna stopa: </label> <input type="text" name="kamatna_stopa" id="kamatna_stopa"/> <br>    
+    <label>Vrijeme u godinama: </label> <input type="text" name="godine" id="godine"/> <br>
+    <label>Rata kredita: </label> <input type="text" name="rata" id="rata"/> <br>
+    <span id='ukupne_kamate'></span> <br>
+    <span id='ukupni_iznos'></span> <br>
     
     <button class="button" type="submit">Otvori kredit korisniku!</button>
 </form>	
