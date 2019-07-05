@@ -274,5 +274,50 @@ class AdminService
 
 		return $arr;
 	}
+
+	function rejectTransakciju($id)
+	{
+		// 1. uzmi sve podatke o toj transakciji
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT * FROM projekt_transakcija WHERE id=:id' );
+			$st->execute( array( 'id' => $id ) );
+		}
+		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
+
+		$transakcija = $st->fetch();
+
+		// 2. na transakciju stavi odobrena = -1
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'UPDATE projekt_transakcija SET odobrena=-1 WHERE id=:id' );
+			$st->execute( array( 'id' => $id ) );
+		}
+		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
+
+		// 3. pronadi racun posiljatelja i dodaj mu ponovo iznos
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT stanje_racuna FROM projekt_racun WHERE id=:id' );
+			$st->execute( array( 'id' => $transakcija['racun_posiljatelj'] ) );
+		}
+		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
+
+		$iznos_racuna = $st->fetch();
+		$iznos = $iznos_racuna['stanje_racuna'] + $transakcija['iznos'];
+
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'UPDATE projekt_racun SET stanje_racuna=:stanje WHERE id=:id' );
+			$st->execute( array( 'stanje' => $iznos, 'id' => $transakcija['racun_posiljatelj']  ) );
+		}
+		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
+
+		return "OK";
+	}
 }
 ?>

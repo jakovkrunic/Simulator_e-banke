@@ -285,6 +285,36 @@ class AdminController extends BaseController
         }
     }
 
+    public function approveTransaction()
+    {
+        $as = new AdminService();
+
+		$id = $_GET['id'];
+
+        $poruka = $as->acceptTransaction($id);
+        
+        $this->registry->template->poruka = $poruka;
+
+		$this->registry->template->transakcije = $as->getAllUnapprovedTransactions();		
+		$this->registry->template->naslov = "Odobravanje transakcija";
+		$this->registry->template->show( 'admin_transakcije' );
+    }
+
+    public function rejectTransaction()
+    {
+        $as = new AdminService();
+
+		$id = $_GET['id'];
+
+        $poruka = $as->rejectTransakciju($id);
+        
+        $this->registry->template->poruka = $poruka;
+
+		$this->registry->template->transakcije = $as->getAllUnapprovedTransactions();		
+		$this->registry->template->naslov = "Odobravanje transakcija";
+		$this->registry->template->show( 'admin_transakcije' );
+    }
+
 
 
 };

@@ -13,6 +13,9 @@ echo '<table align="center"><th>Opis</th><th>Racun pošiljatelja</th><th>Račun 
 <td>
 		<form method="post" action="<?php echo __SITE_URL . '/index.php?rt=admin/approveTransaction&id='.$transakcija->id?>">
 			<button class="button" type="submit">Odobri!</button>
+		</form>	<br>
+        <form method="post" action="<?php echo __SITE_URL . '/index.php?rt=admin/rejectTransaction&id='.$transakcija->id?>">
+			<button class="button" type="submit">Odbij!</button>
 		</form>	
 		</td></tr>
                 <?php
