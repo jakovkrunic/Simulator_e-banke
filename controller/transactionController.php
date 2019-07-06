@@ -104,20 +104,16 @@ class TransactionController extends BaseController
 		$Trans= new TransactionService();
 		$transactions=$Trans->getAllTransactions($_SESSION['oib']);
 		$id_trans=$_POST["ponisti"];
+		echo $id_trans;
 		$ac=new AccountService();
-		foreach ($transactions as $transaction ){
-			if ($transaction->id == $id_trans){
-				if($transaction->odobrena != 0){
-						$this->registry->template->poruka= "Transakcija je u međuvremenu updateana!";
-						break;
-						}
-				else {
-					$Trans->removependingTransaction($id_trans);
-					$ac->updateAmount($transaction->racun_posiljatelj,-$transaction->iznos);
-					$this->registry->template->poruka= "Uspješno ste poništili transakciju!";
-					break;
+		$transaction=$Trans->getTransactionById($id_trans);
+		if($transaction->odobrena != 0){
+				$this->registry->template->poruka= "Transakcija je u međuvremenu updateana!";
 				}
-			}
+		else {
+			$Trans->removependingTransaction($id_trans);
+			$ac->updateAmount($transaction->racun_posiljatelj,-$transaction->iznos);
+			$this->registry->template->poruka= "Uspješno ste poništili transakciju!";
 		}
 
 		$transactions=$Trans->getAllTransactions($_SESSION['oib']);

@@ -2,6 +2,22 @@
 
 class TransactionService
 {
+	function getTransactionById($transid){
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT * FROM projekt_transakcija WHERE id=:id' );
+			$st->execute( array( 'id' => $transid) );
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+
+		$row = $st->fetch();
+		if( $row === false )
+			return null;
+		else
+			return new Transaction($row['id'], $row['opis'], $row['racun_posiljatelj'] ,
+											$row['racun_primatelj'],	$row['valuta'], $row['iznos'], $row['odobrena'],$row['datum']);
+	}
 
 	function insertNewTransaction($opis, $racun_posiljatelj, $racun_primatelj, $valuta, $iznos) 		//stvori novu transakciju, odobrena=0, datum je danasnji
 	{
