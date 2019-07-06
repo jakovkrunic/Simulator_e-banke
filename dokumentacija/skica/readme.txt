@@ -1,1 +1,0 @@
-Ovo je samo skica, nemojte se držati ovoga kao pijan plota. Ako vidite da se nešto može olakšati/poboljšati recite.
