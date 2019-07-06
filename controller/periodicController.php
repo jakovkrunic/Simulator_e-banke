@@ -22,7 +22,7 @@ class PeriodicController extends BaseController
 		$this->registry->template->show( 'periodic_index' );
   }
 
-  public function new()
+  public function novi()
 	{
 		$ac = new AccountService();
 		$racuni=$ac->getAllUserAccounts($_SESSION['oib']);

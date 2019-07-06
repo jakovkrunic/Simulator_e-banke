@@ -49,5 +49,6 @@ else echo " transakcija" ?> za odobriti ili odbiti.
 
 </div>
 
+<script src="<?php echo __SITE_URL;?>/js/admin_tecaj.js"></script>
 <?php
 require_once 'view/_footer.php'; ?>

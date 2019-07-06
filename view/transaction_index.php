@@ -11,7 +11,7 @@
 
  ?>
 
- <form style = "text-align: center" method="post" action="<?php echo __SITE_URL . '/index.php?rt=transaction/new'?>">
+ <form style = "text-align: center" method="post" action="<?php echo __SITE_URL . '/index.php?rt=transaction/novi'?>">
  			<button class="button" type="submit">Nova transakcija</button>
  		</form>	<br>
 <h2> Povijest transakcija</h2>
@@ -89,7 +89,7 @@ for ($i = 1; $i <= 30; $i++) {
 
 <script src="<?php echo __SITE_URL;?>/js/povijest.js"></script>
 
- 
+
 <br>
 
 <?php

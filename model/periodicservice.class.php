@@ -107,9 +107,8 @@ class PeriodicService {
 
   		$valuta1 = $transakcija['valuta'];
   		$valuta2 = $racun_primatelj['valuta_racuna'];
-  		echo '<script> getTecaj("'. $valuta1 . '", "' . $valuta2. '") </script>';
-
-  		$tecaj = $_COOKIE["tecaj"];
+      $tecaj = 1 / $_COOKIE[$valuta1];
+  		$tecaj = $tecaj * $_COOKIE[$valuta2];
 
   		// Nadji iznos
 
@@ -226,9 +225,9 @@ class PeriodicService {
 
   		$valuta2 = $racun_posiljatelj['valuta_racuna'];
   		$valuta1 = $credit['valuta'];
-  		echo '<script> getTecaj("'. $valuta1 . '", "' . $valuta2. '") </script>';
+      $tecaj = 1 / $_COOKIE[$valuta1];
+  		$tecaj = $tecaj * $_COOKIE[$valuta2];
 
-  		$tecaj = $_COOKIE["tecaj"];
 
   		// Nadji iznos
 

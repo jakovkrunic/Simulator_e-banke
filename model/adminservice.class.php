@@ -520,12 +520,9 @@ class AdminService
 
 		$valuta1 = $transakcija['valuta'];
 		$valuta2 = $racun_primatelj['valuta_racuna'];
-
-		echo '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>';
-		echo '<script src="' . __SITE_URL .'/js/approve_tecaj.js"></script>';
-		echo '<script> getTecaj("'. $valuta1 . '", "' . $valuta2. '") </script>';
-
-		$tecaj = $_COOKIE["tecaj"];
+		
+		$tecaj = 1 / $_COOKIE[$valuta1];
+		$tecaj = $tecaj * $_COOKIE[$valuta2];
 
 		// Nadji iznos
 

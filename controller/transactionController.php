@@ -34,7 +34,7 @@ class TransactionController extends BaseController
 
 	}
 
-	public function new()
+	public function novi()
 	{
 		$ac = new AccountService();
 		$racuni=$ac->getAllUserAccounts($_SESSION['oib']);

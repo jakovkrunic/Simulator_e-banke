@@ -87,6 +87,5 @@
 	}
 	?>
 </div>
-
 <?php
 require_once 'view/_footer.php'; ?>

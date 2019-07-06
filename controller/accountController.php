@@ -13,7 +13,9 @@ class AccountController extends BaseController
 		for($i=0;$i<count($punomocni_ids);$i++)
 		{
 			$punomocni[] = $as->getAccountById($punomocni_ids[$i]);
-			$vlasnici[] = $us->getUserByOIB(($as->getAccountById($punomocni_ids[$i]))->oib);
+			$temp = $as->getAccountById($punomocni_ids[$i]);
+			$temp_oib = $temp->oib;
+			$vlasnici[] = $us->getUserByOIB($temp_oib);
 		}
 		$op_racuni = array();
 		$korisnici = array();
@@ -70,10 +72,11 @@ class AccountController extends BaseController
 
 		$vrsta = $_POST['vrsta'];
 		$valuta = $_POST['valuta'];
-		$minus = $_POST['minus'];
+		$minus = -1 * $_POST['minus'];
 		$oib = $_SESSION['oib'];
+		$pocetni_iznos = $_POST['pocetni_iznos'];
 
-		$as->openAccount($oib, $vrsta, $valuta, $minus);
+		$as->openAccount($oib, $vrsta, $valuta, $pocetni_iznos, $minus);
 
 
 		$this->registry->template->racuni = $as->getAllUserAccounts($_SESSION['oib']);

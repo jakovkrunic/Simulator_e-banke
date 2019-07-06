@@ -11,7 +11,7 @@
 
  ?>
 
- <form style = "text-align: center" method="post" action="<?php echo __SITE_URL . '/index.php?rt=periodic/new'?>">
+ <form style = "text-align: center" method="post" action="<?php echo __SITE_URL . '/index.php?rt=periodic/novi'?>">
  			<button class="button" type="submit">Nova transakcija</button>
  		</form>	<br>
 

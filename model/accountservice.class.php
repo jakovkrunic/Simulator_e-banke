@@ -41,15 +41,15 @@ class AccountService
 		return $arr;
 	}
 
-	function openAccount( $user_oib, $vrsta_racuna, $valuta_racuna, $zeljeni_minus ){
+	function openAccount( $user_oib, $vrsta_racuna, $valuta_racuna, $pocetni_iznos, $zeljeni_minus ){
 
 		try
 		{
 			$db = DB::getConnection();
 			$st = $db->prepare(
 			'INSERT INTO projekt_racun (oib,tip_racuna,valuta_racuna,stanje_racuna,dozvoljeni_minus, datum_izrade, odobren)
-			VALUES (:user_oib, :vrsta_racuna, :valuta_racuna, 0, :zeljeni_minus, :datum, 0);');
-			$st->execute( array( 'user_oib' => $user_oib, 'vrsta_racuna' => $vrsta_racuna, 'valuta_racuna' => $valuta_racuna, 'zeljeni_minus' => $zeljeni_minus , 'datum' => date('Y-m-d')) );
+			VALUES (:user_oib, :vrsta_racuna, :valuta_racuna, :pocetni, :zeljeni_minus, :datum, 0);');
+			$st->execute( array( 'user_oib' => $user_oib, 'vrsta_racuna' => $vrsta_racuna, 'valuta_racuna' => $valuta_racuna, 'pocetni' => $pocetni_iznos, 'zeljeni_minus' => $zeljeni_minus , 'datum' => date('Y-m-d')) );
 		}
 		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
 

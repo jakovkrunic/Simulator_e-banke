@@ -21,7 +21,7 @@
     </select><br>
 
     <label>Početno stanje računa:</label>
-    <input type="number" disabled value="0"><br>
+    <input type="number" name="pocetni_iznos" value="0"><br>
 
     <label>Željeno dozvoljeno prekoračenje računa:</label>
     <input type="range" min="0" max="10000" id="raspon" value="1000" step="100" name="minus">&nbsp;<label id="minus"></label><br>
