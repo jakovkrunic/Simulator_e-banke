@@ -9,10 +9,11 @@ class AdminController extends BaseController
         $racuni = $as -> getAllUnapprovedAccounts();
         $transakcije = $as -> getAllUnapprovedTransactions();
         $punomoci = $as -> getUnapprovedPunomoc();
+        $periodicne = $as -> getAllUnapprovedPeriodic();
         $br_punomoci = count($punomoci);
         $br_korisnika = count($korisnici);
         $br_racuna = count($racuni);
-        $br_transakcija = count($transakcije);
+        $br_transakcija = count($transakcije) + count($periodicne);
         $this->registry->template->br_korisnika = $br_korisnika;
         $this->registry->template->br_racuna = $br_racuna;
         $this->registry->template->br_punomoci = $br_punomoci;
@@ -128,6 +129,7 @@ class AdminController extends BaseController
         $as = new AdminService();
 
 		$this->registry->template->transakcije = $as->getAllUnapprovedTransactions();
+    $this->registry->template->periodic = $as->getAllUnapprovedPeriodic();
 		$this->registry->template->naslov = "Odobravanje transakcija";
 		$this->registry->template->show( 'admin_transakcije' );
     }
@@ -309,6 +311,7 @@ class AdminController extends BaseController
         $this->registry->template->poruka = $poruka;
 
 		$this->registry->template->transakcije = $as->getAllUnapprovedTransactions();
+    $this->registry->template->periodic = $as->getAllUnapprovedPeriodic();
 		$this->registry->template->naslov = "Odobravanje transakcija";
 		$this->registry->template->show( 'admin_transakcije' );
     }
@@ -324,6 +327,7 @@ class AdminController extends BaseController
         $this->registry->template->poruka = $poruka;
 
 		$this->registry->template->transakcije = $as->getAllUnapprovedTransactions();
+    $this->registry->template->periodic = $as->getAllUnapprovedPeriodic();
 		$this->registry->template->naslov = "Odobravanje transakcija";
 		$this->registry->template->show( 'admin_transakcije' );
     }
@@ -379,16 +383,47 @@ class AdminController extends BaseController
       $racuni = $as -> getAllUnapprovedAccounts();
       $transakcije = $as -> getAllUnapprovedTransactions();
       $punomoci = $as -> getUnapprovedPunomoc();
+      $periodicne = $as -> getAllUnapprovedPeriodic();
       $br_punomoci = count($punomoci);
       $br_korisnika = count($korisnici);
       $br_racuna = count($racuni);
-      $br_transakcija = count($transakcije);
+      $br_transakcija = count($transakcije) + count($periodicne);
       $this->registry->template->br_korisnika = $br_korisnika;
       $this->registry->template->br_racuna = $br_racuna;
       $this->registry->template->br_punomoci = $br_punomoci;
       $this->registry->template->br_transakcija = $br_transakcija;
       $this->registry->template->poruka = "Akcije su provedene!";
       $this->registry->template->show( 'admin_index');
+    }
+
+    public function acceptPeriodic() {
+      $as = new AdminService();
+
+  $id = $_GET['id'];
+
+      $poruka = $as->acceptPeriodic($id);
+
+      $this->registry->template->poruka = $poruka;
+
+  $this->registry->template->transakcije = $as->getAllUnapprovedTransactions();
+  $this->registry->template->periodic = $as->getAllUnapprovedPeriodic();
+  $this->registry->template->naslov = "Odobravanje transakcija";
+  $this->registry->template->show( 'admin_transakcije' );
+    }
+
+    public function rejectPeriodic() {
+      $as = new AdminService();
+
+  $id = $_GET['id'];
+
+      $poruka = $as->rejectPeriodic($id);
+
+      $this->registry->template->poruka = $poruka;
+
+  $this->registry->template->transakcije = $as->getAllUnapprovedTransactions();
+  $this->registry->template->periodic = $as->getAllUnapprovedPeriodic();
+  $this->registry->template->naslov = "Odobravanje transakcija";
+  $this->registry->template->show( 'admin_transakcije' );
     }
 };
 

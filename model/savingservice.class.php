@@ -30,5 +30,19 @@ class SavingService{
     catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
   }
 
+  function getAccountById($id) {
+    try
+    {
+      $db = DB::getConnection();
+      $st = $db->prepare( 'SELECT * FROM projekt_stednja WHERE id=:id' );
+      $st->execute( array( 'id' => $id) );
+    }
+    catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+
+    $row = $st->fetch();
+    return new Saving($row['id'], $row['oib'], $row['iznos_stednje'] ,
+                    $row['kamatna_stopa'],	$row['valuta'], $row['datum_sljedece']);
+  }
+
 }
  ?>

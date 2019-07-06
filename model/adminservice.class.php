@@ -210,7 +210,7 @@ class AdminService
 
     $str_date = $str_date . '-';
 
-    if ($day >= 10) $str_date = $str_date + strval($day);
+    if ($day >= 10) $str_date = $str_date . strval($day);
     else $str_date = $str_date . '0' . strval($day);
 
 		try
@@ -274,7 +274,7 @@ class AdminService
 
     $str_date = $str_date . '-';
 
-    if ($day >= 10) $str_date = $str_date + strval($day);
+    if ($day >= 10) $str_date = $str_date . strval($day);
     else $str_date = $str_date . '0' . strval($day);
 
 		try
@@ -321,6 +321,27 @@ class AdminService
 		{
 			$arr[] = new Transaction($row['id'], $row['opis'], $row['racun_posiljatelj'] ,
 					$row['racun_primatelj'], $row['valuta'], $row['iznos'], $row['odobrena'], $row['datum']);
+
+		}
+
+		return $arr;
+	}
+
+	function getAllUnapprovedPeriodic()
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT * FROM projekt_periodicna_transakcija WHERE odobrena=0' );
+			$st->execute();
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+
+		$arr = array();
+		while( $row = $st->fetch() )
+		{
+			$arr[] = new PeriodicTransaction($row['id'], $row['opis'], $row['racun_posiljatelj'] ,
+					$row['racun_primatelj'], $row['valuta'], $row['iznos'], $row['period'], $row['odobrena'], $row['datum_sljedece']);
 
 		}
 
@@ -529,6 +550,33 @@ class AdminService
 			$st->execute( array( 'stanje' => $novo_stanje, 'id' => $transakcija['racun_primatelj']  ) );
 		}
 		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
+
+		return "OK";
+	}
+
+	function acceptPeriodic($id) {
+		// Na transakciju stavi odobrena = 1
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'UPDATE projekt_periodicna_transakcija SET odobrena=1 WHERE id=:id' );
+			$st->execute( array( 'id' => $id ) );
+		}
+		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
+
+		return "OK";
+	}
+
+	function rejectPeriodic($id) {
+		// Na transakciju stavi odobrena = -1
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'UPDATE projekt_periodicna_transakcija SET odobrena=-1 WHERE id=:id' );
+			$st->execute( array( 'id' => $id ) );
+		}
+		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
+		return "OK";
 	}
 }
 ?>

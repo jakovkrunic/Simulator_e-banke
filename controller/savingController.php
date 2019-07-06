@@ -34,8 +34,14 @@ class SavingController extends BaseController
 		$ac=new AccountService();
 		$racun=$ac->getAccountById($posiljatelj);
 		if( ($racun->stanje_racuna-$racun->dozvoljeni_minus)>$iznos){
-			$valuta=$racun->valuta_racuna;
-			$ss->updateAmount($racun_primatelj,$iznos);
+			$_racun_primatelj = $ss->getAccountById($racun_primatelj);
+			$valuta2=$_racun_primatelj->valuta;
+			$valuta1=$racun->valuta_racuna;
+			echo '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>';
+			echo '<script src="' . __SITE_URL .'/js/approve_tecaj.js"></script>';
+  		echo '<script> getTecaj("'. $valuta1 . '", "' . $valuta2. '") </script>';
+			$tecaj = $_COOKIE["tecaj"];
+			$ss->updateAmount($racun_primatelj,round(floatval($iznos) * floatval($tecaj), 2));
 			$ac->updateAmount($posiljatelj,$iznos);
 			$this->registry->template->poruka= "Uspjesno ste uplatili odabrani iznos u štednju!";
 		}

@@ -6,6 +6,50 @@ class PeriodicService {
     echo '<script src="' . __SITE_URL .'/js/approve_tecaj.js"></script>';
   }
 
+  function getTransactionsBySenderId($id_posiljatelja){
+		try
+    {
+      $db = DB::getConnection();
+      $st = $db->prepare( 'SELECT * FROM projekt_periodicna_transakcija  WHERE racun_posiljatelj=:id_posiljatelja' );
+      $st->execute( array( 'id_posiljatelja' => $id_posiljatelja) );
+    }
+    catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+
+    $arr = array();
+    while( $row = $st->fetch() )
+    {
+      $arr[] = new PeriodicTransaction($row['id'], $row['opis'], $row['racun_posiljatelj'] ,
+                      $row['racun_primatelj'],	$row['valuta'], $row['iznos'],
+											$row['period'], $row['odobrena'], $row['datum_sljedece']);
+    }
+
+    return $arr;
+	}
+
+	function getAllTransactions($user_oib){
+		// ne moze oib, ili ce se morat joinat ili ce se morat spremit u sešn idevi racuna
+		// ili pozvat daj mi sve ideve i onda vrtit po tome
+		try
+    {
+      $db = DB::getConnection();
+      $st = $db->prepare( 'SELECT projekt_periodicna_transakcija.id, opis, racun_posiljatelj, racun_primatelj, valuta, iznos, period, odobrena, datum_sljedece
+				 				FROM projekt_periodicna_transakcija JOIN  projekt_racun
+								ON projekt_periodicna_transakcija.racun_posiljatelj=projekt_racun.id WHERE oib=:oib' );
+      $st->execute( array( 'oib' => $user_oib) );
+    }
+    catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+
+    $arr = array();
+    while( $row = $st->fetch() )
+    {
+      $arr[] = new PeriodicTransaction($row['id'], $row['opis'], $row['racun_posiljatelj'] ,
+                      $row['racun_primatelj'],	$row['valuta'], $row['iznos'],
+											$row['period'], $row['odobrena'], $row['datum_sljedece']);
+    }
+
+    return $arr;
+	}
+
   function resolvePeriodicTransactions() {
     $date = getdate();
     $day = $date['mday'];
@@ -21,7 +65,7 @@ class PeriodicService {
 
     $str_date = $str_date . '-';
 
-    if ($day >= 10) $str_date = $str_date + strval($day);
+    if ($day >= 10) $str_date = $str_date . strval($day);
     else $str_date = $str_date . '0' . strval($day);
 
     try
@@ -94,9 +138,6 @@ class PeriodicService {
 
       $day2 = $day;
       $month2 = $month + intval($transakcija['period']);
-      echo $month2 . '<br>';
-      echo $transakcija['period'] . '<br>';
-      echo $month . '<br>';
       $year2 = $year;
 
       while ($month2 > 12) {
@@ -142,7 +183,7 @@ class PeriodicService {
 
     $str_date = $str_date . '-';
 
-    if ($day >= 10) $str_date = $str_date + strval($day);
+    if ($day >= 10) $str_date = $str_date . strval($day);
     else $str_date = $str_date . '0' . strval($day);
 
     try
@@ -273,7 +314,7 @@ class PeriodicService {
 
     $str_date = $str_date . '-';
 
-    if ($day >= 10) $str_date = $str_date + strval($day);
+    if ($day >= 10) $str_date = $str_date . strval($day);
     else $str_date = $str_date . '0' . strval($day);
 
     try
@@ -328,6 +369,48 @@ class PeriodicService {
   		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
     }
   }
+
+  function insertNewTransaction($opis, $racun_posiljatelj, $racun_primatelj, $valuta, $iznos, $period)
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'INSERT INTO projekt_periodicna_transakcija(opis, racun_posiljatelj, racun_primatelj, valuta, iznos, period, odobrena, datum_sljedece) VALUES (:opis,
+													:racun_posiljatelj, :racun_primatelj, :valuta, :iznos, :period, :odobrena, :datum)' );
+			$st->execute( array( 'opis' => $opis, 'racun_posiljatelj' => $racun_posiljatelj, 'racun_primatelj' => $racun_primatelj,
+		 												'valuta' => $valuta, 'iznos' => $iznos, 'period' => $period, 'odobrena' => 0, 'datum' => date('Y-m-d') ) );
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+
+	}
+
+  function getTransactionById($transid){
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT * FROM projekt_periodicna_transakcija WHERE id=:id' );
+			$st->execute( array( 'id' => $transid) );
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+
+		$row = $st->fetch();
+		if( $row === false )
+			return null;
+		else
+			return new PeriodicTransaction($row['id'], $row['opis'], $row['racun_posiljatelj'] ,
+											$row['racun_primatelj'],	$row['valuta'], $row['iznos'],
+                      $row['period'], $row['odobrena'],$row['datum_sljedece']);
+	}
+
+  function removePeriodicTransaction($id_trans){
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'DELETE FROM projekt_periodicna_transakcija WHERE id=:id' );
+			$st->execute( array( 'id' => $id_trans) );
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+	}
 };
 
 ?>
