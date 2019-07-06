@@ -45,7 +45,7 @@ class PeriodicService {
 
   		$racun_posiljatelj = $st->fetch();
 
-      if ($racun_posiljatelj['stanje_racuna'] < $transakcija['iznos'])
+      if ($racun_posiljatelj['stanje_racuna'] - $racun_posiljatelj['dozvoljeni_minus'] < $transakcija['iznos'])
         continue;
 
       // Nadji racun primatelja i valutu
@@ -165,7 +165,7 @@ class PeriodicService {
 
   		$racun_posiljatelj = $st->fetch();
 
-      if ($racun_posiljatelj['stanje_racuna'] < $credit['rata_placanja']) {
+      if ($racun_posiljatelj['stanje_racuna'] - $racun_posiljatelj['dozvoljeni_minus'] < $credit['rata_placanja']) {
         // Salji mail
         try {
     			$db = DB::getConnection();
