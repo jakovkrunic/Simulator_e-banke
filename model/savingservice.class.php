@@ -14,7 +14,7 @@ class SavingService{
     while( $row = $st->fetch() )
     {
       $arr[] = new Saving($row['id'], $row['oib'], $row['iznos_stednje'] ,
-                      $row['kamatna_stopa'],	$row['valuta']);
+                      $row['kamatna_stopa'],	$row['valuta'], $row['datum_sljedece']);
     }
 
     return $arr;

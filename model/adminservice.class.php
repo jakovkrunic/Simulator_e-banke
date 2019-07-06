@@ -188,16 +188,42 @@ class AdminService
 
 	function addSaving($oib, $iznos, $kamatna_stopa, $valuta)
 	{
+
+		$date = getdate();
+    $day = $date['mday'];
+    $month = $date['mon'];
+    $year = $date['year'];
+
+		if ($day >= 15) $month++;
+		if ($month > 12) {
+			$month -= 12;
+			$year++;
+		}
+		$day = 15;
+
+		$str_date = strval($year);
+
+    $str_date = $str_date . '-';
+
+    if ($month >= 10) $str_date = $str_date . strval($month);
+    else $str_date = $str_date . '0' . strval($month);
+
+    $str_date = $str_date . '-';
+
+    if ($day >= 10) $str_date = $str_date + strval($day);
+    else $str_date = $str_date . '0' . strval($day);
+
 		try
 		{
 			$db = DB::getConnection();
-			$st = $db->prepare( 'INSERT INTO projekt_stednja(oib, iznos_stednje, kamatna_stopa, valuta) VALUES ' .
-				                '(:oib, :iznos, :kam, :val)' );
+			$st = $db->prepare( 'INSERT INTO projekt_stednja(oib, iznos_stednje, kamatna_stopa, valuta, datum_sljedece) VALUES ' .
+				                '(:oib, :iznos, :kam, :val, :datum)' );
 
 			$st->execute( array( 'oib' => $oib,
 								 'iznos' => $iznos,
 								 'kam' => $kamatna_stopa,
-								 'val' => $valuta
+								 'val' => $valuta,
+								 'datum' => $str_date
 				                  ) );
 		}
 		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
@@ -226,6 +252,31 @@ class AdminService
 
 	function addCredit($oib, $iznos, $kamatna_stopa, $valuta, $racun, $rata)
 	{
+
+		$date = getdate();
+    $day = $date['mday'];
+    $month = $date['mon'];
+    $year = $date['year'];
+
+		if ($day >= 15) $month++;
+		if ($month > 12) {
+			$month -= 12;
+			$year++;
+		}
+		$day = 15;
+
+		$str_date = strval($year);
+
+    $str_date = $str_date . '-';
+
+    if ($month >= 10) $str_date = $str_date . strval($month);
+    else $str_date = $str_date . '0' . strval($month);
+
+    $str_date = $str_date . '-';
+
+    if ($day >= 10) $str_date = $str_date + strval($day);
+    else $str_date = $str_date . '0' . strval($day);
+
 		try
 		{
 			$db = DB::getConnection();
@@ -238,15 +289,16 @@ class AdminService
 		try
 		{
 			$db = DB::getConnection();
-			$st = $db->prepare( 'INSERT INTO projekt_kredit(oib, id_racuna, iznos_kredita, kamatna_stopa, rata_placanja, valuta) VALUES ' .
-				                '(:oib, :id, :iznos, :kam, :rata, :val)' );
+			$st = $db->prepare( 'INSERT INTO projekt_kredit(oib, id_racuna, iznos_kredita, kamatna_stopa, rata_placanja, valuta, datum_sljedece) VALUES ' .
+				                '(:oib, :id, :iznos, :kam, :rata, :val, :datum)' );
 
 			$st->execute( array( 'oib' => $oib,
 								 'id' => $racun_id['id'],
 								 'iznos' => $iznos,
 								 'kam' => $kamatna_stopa,
 								 'rata' =>$rata,
-								 'val' => $valuta
+								 'val' => $valuta,
+								 'datum' => $str_date
 				                  ) );
 		}
 		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }

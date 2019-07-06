@@ -14,7 +14,7 @@ class CreditService{
     while( $row = $st->fetch() )
     {
       $arr[] = new Credit($row['id'], $row['oib'], $row['iznos_kredita'] ,
-                      $row['kamatna_stopa'], $row['rata_placanja'],	$row['valuta']);
+                      $row['kamatna_stopa'], $row['rata_placanja'],	$row['valuta'], $row['datum_sljedece']);
     }
 
     return $arr;

@@ -1,8 +1,8 @@
 <?php
 
 class Credit{
-  protected $id, $oib, $iznos_kredita, $kamatna_stopa, $rata_placanja, $valuta;
-	function __construct($id, $oib, $iznos_kredita, $kamatna_stopa, $rata_placanja, $valuta)
+  protected $id, $oib, $iznos_kredita, $kamatna_stopa, $rata_placanja, $valuta, $datum_sljedece;
+	function __construct($id, $oib, $iznos_kredita, $kamatna_stopa, $rata_placanja, $valuta, $datum_sljedece)
 	{
 		$this->oib = $oib;
 		$this->id = $id;
@@ -11,7 +11,7 @@ class Credit{
 		$this->kamatna_stopa = $kamatna_stopa;
 		$this->rata_placanja = $rata_placanja;
 		$this->valuta = $valuta;
-
+    $this->datum_sljedece = $datum_sljedece;
 	}
 
   function __get( $prop ) { return $this->$prop; }

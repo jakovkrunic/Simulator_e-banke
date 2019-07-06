@@ -6,6 +6,7 @@
     <th>Kamatna stopa</th>
     <th>Rata plaćanja</th>
     <th>Valuta</th>
+		<th> Datum sljedeće naplate </th>
   </tr>
 	<?php
 		foreach( $krediti as $kredit )
@@ -15,6 +16,7 @@
 			     '<td>' . $kredit->kamatna_stopa . '</td>' .
            '<td>' . $kredit->rata_placanja . '</td>' .
 			     '<td>' . $kredit->valuta . '</td>' .
+					 '<td>' . $kredit->datum_sljedece . '</td>' .
 			     '</tr>';
 		}
 	?>
