@@ -92,8 +92,8 @@ th, td
 tr:not(:first-child):hover {background-color: #e6f0ff;}
 
 .map {
-  height: 300px;
-  width: 50%;
+  height: 400px;
+  width: 100%;
 }
 
 .footer {
@@ -116,12 +116,12 @@ tr:not(:first-child):hover {background-color: #e6f0ff;}
 .footer a:link {color:#006666; text-decoration: none;}      /* unvisited link */
 .footer a:visited {color:#006666; text-decoration: none;}  /* visited link */
 .footer a:hover {color:#006666; text-decoration: none;}  /* mouse over link */
-.footer a:active {color:#006666; text-decoration: none;}  /* selected link */ 
+.footer a:active {color:#006666; text-decoration: none;}  /* selected link */
 
 a:link {color:#004d4d; text-decoration: none;  font-weight: bold;}      /* unvisited link */
 a:visited {color:#004d4d; text-decoration: none;  font-weight: bold;}  /* visited link */
 a:hover {color:#004d4d; text-decoration: none; font-weight: bold;}  /* mouse over link */
-a:active {color:#004d4d; text-decoration: none; font-weight: bold;}  /* selected link */ 
+a:active {color:#004d4d; text-decoration: none; font-weight: bold;}  /* selected link */
 
 p.obavijesti {
     font-size: 30px;
@@ -152,4 +152,3 @@ p.korisnici:hover:not(.active)
 {
     background-color: #e0e7ff;
 }
-
